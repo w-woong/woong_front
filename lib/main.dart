@@ -1,36 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+
+// for usePathUrlStrategy();
+import 'package:flutter_web_plugins/url_strategy.dart';
+
+// models
+import 'package:woong_front/models/appconfig.dart';
+
+// views
+import 'package:woong_front/views/home.dart';
+import 'package:woong_front/views/home_custom.dart';
+import 'package:woong_front/views/home_singlechildscrollview.dart';
 
 void main() {
-  runApp(const MyApp());
+  usePathUrlStrategy();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        Provider(create: (context) => AppConfigModel()),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          // Define the default brightness and colors.
+          brightness: Brightness.light,
+          primaryColor: Colors.white,
+
+          // Define the default font family.
+          fontFamily: 'Georgia',
+
+          // Define the default `TextTheme`. Use this to specify the default
+          // text styling for headlines, titles, bodies of text, and more.
+          textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.normal),
+            bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          ),
+        ),
+        routerConfig: _router,
+        title: 'Woong',
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
+
+  final GoRouter _router = GoRouter(
+    initialLocation: '/homev3',
+    routes: <GoRoute>[
+      GoRoute(
+        path: '/',
+        builder: (BuildContext context, GoRouterState state) {
+          return HomeView();
+        },
+      ),
+      GoRoute(
+        path: '/homev2',
+        builder: (BuildContext context, GoRouterState state) {
+          return const HomeCustomView();
+        },
+      ),
+      GoRoute(
+        path: '/homev3',
+        builder: (BuildContext context, GoRouterState state) {
+          return const HomeSingleChildScrollView();
+        },
+      ),
+      GoRoute(
+        path: '/nested',
+        builder: (BuildContext context, GoRouterState state) {
+          return NestedListView('asdf');
+        },
+      ),
+    ],
+  );
 }
 
+//
+//
+//
+//
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -82,14 +140,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> launchInBrowser(String url) async {
-    if (!await launchUrl(
-      Uri.parse(url),
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw 'Could not launch';
-    }
-  }
+  // Future<void> launchInBrowser(String url) async {
+  //   if (!await launchUrl(
+  //     Uri.parse(url),
+  //     mode: LaunchMode.externalApplication,
+  //   )) {
+  //     throw 'Could not launch';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          launchInBrowser('https://localhost:5558/auth?id=1234');
+          // launchInBrowser('https://localhost:5558/auth?id=1234');
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
