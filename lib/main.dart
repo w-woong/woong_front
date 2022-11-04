@@ -6,13 +6,16 @@ import 'package:go_router/go_router.dart';
 
 // for usePathUrlStrategy();
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:woong_front/mocks/database.dart';
 
 // models
 import 'package:woong_front/models/appconfig.dart';
+import 'package:woong_front/mocks/database.dart';
 
 // views
 import 'package:woong_front/views/home.dart';
 import 'package:woong_front/views/home_custom.dart';
+import 'package:woong_front/views/home_customscrollview.dart';
 import 'package:woong_front/views/home_singlechildscrollview.dart';
 
 void main() {
@@ -29,6 +32,21 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (context) => AppConfigModel()),
+        StreamProvider<int>.value(
+          value: Person(name: 'wonk', stayedSecond: 0).getStayedSecond,
+          initialData: 0,
+        ),
+        StreamProvider<List<Product>>.value(
+          value: Product(name: 'c').products,
+          initialData: const [],
+        ),
+        // StreamProvider(
+        //   create: (context) {
+        //     return Person(name: 'won', stayedSecond: 0).getStayedSecond;
+        //   },
+        //   initialData: 0,
+        //   catchError: (context, error) => error.toString(),
+        // ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -55,12 +73,12 @@ class MyApp extends StatelessWidget {
   }
 
   final GoRouter _router = GoRouter(
-    initialLocation: '/homev3',
+    initialLocation: '/',
     routes: <GoRoute>[
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          return HomeView();
+          return HomeCustomScrollView();
         },
       ),
       GoRoute(
