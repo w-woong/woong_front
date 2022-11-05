@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/views/components/myappbar.dart';
-import 'package:woong_front/views/components/mysliverappbar.dart';
-import 'package:woong_front/views/components/bottomnavigationbar.dart';
-import 'package:woong_front/views/home_body_singlechildscrollview.dart';
+import 'package:woong_front/examples/views/components/myappbar.dart';
+import 'package:woong_front/examples/views/components/mysliverappbar.dart';
+import 'package:woong_front/examples/views/components/bottomnavigationbar.dart';
+import 'package:woong_front/examples/views/home_body_singlechildscrollview.dart';
 
 class HomeSingleChildScrollView extends StatefulWidget {
   const HomeSingleChildScrollView({super.key});

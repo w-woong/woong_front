@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/mocks/database.dart';
-import 'package:woong_front/views/components/bottomnavigationbar.dart';
+import 'package:woong_front/examples/mocks/database.dart';
+import 'package:woong_front/examples/models/appconfig.dart';
+import 'package:woong_front/examples/views/components/bottomnavigationbar.dart';
 
 class HomeCustomScrollView extends StatefulWidget {
   const HomeCustomScrollView({super.key});
@@ -12,21 +13,28 @@ class HomeCustomScrollView extends StatefulWidget {
 
 class _HomeCustomScrollViewState extends State<HomeCustomScrollView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     int a = Provider.of<int>(context);
     List<Product> products = Provider.of<List<Product>>(context);
 
+    String title = context.select((AppConfigProv config) => config.model.title);
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             pinned: true,
             snap: true,
             floating: true,
             expandedHeight: 150,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text('Home'),
-              background: FlutterLogo(),
+              title: Text(title),
+              background: const FlutterLogo(),
             ),
           ),
           SliverToBoxAdapter(
@@ -41,6 +49,10 @@ class _HomeCustomScrollViewState extends State<HomeCustomScrollView> {
             child: Container(
               color: Colors.amber,
               height: 100,
+              child: TextButton(
+                child: Text('click'),
+                onPressed: () => context.read<AppConfigProv>().getConfig(),
+              ),
             ),
           ),
           SliverToBoxAdapter(

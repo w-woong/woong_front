@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/views/components/mysliverappbar.dart';
+import 'package:woong_front/examples/views/components/mysliverappbar.dart';
 
 class HomeCustomView extends StatefulWidget {
   const HomeCustomView({super.key});

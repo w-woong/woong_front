@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/models/appconfig.dart';
+import 'package:woong_front/examples/models/appconfig.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
