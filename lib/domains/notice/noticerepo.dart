@@ -1,3 +1,4 @@
+import 'package:woong_front/commons/strings.dart';
 import 'package:woong_front/domains/notice/notice.dart';
 
 class ShortNoticeRepo {
@@ -18,7 +19,10 @@ class ShortNoticeRepo {
       List<ShortNotice> list = [];
 
       for (String url in imgList) {
-        list.add(ShortNotice(url));
+        list.add(ShortNotice(
+            imgUrl: url,
+            name: StringUtils.randomeString(20),
+            description: StringUtils.randomeString(80)));
       }
       return list;
     });

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:woong_front/domains/promotion/promotion.dart';
 
 class MainPromotionView extends StatelessWidget {
-  const MainPromotionView({super.key});
+  Promotion promotion;
 
-  final String imgUrl =
-      'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80';
+  MainPromotionView({super.key, required this.promotion});
+
+  // final String imgUrl =
+  //     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80';
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class MainPromotionView extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.network(
-              imgUrl,
+              promotion.imgUrl,
               fit: BoxFit.cover,
             ),
           ),
@@ -33,7 +36,7 @@ class MainPromotionView extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text(
-                    'title',
+                    promotion.name,
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ],

@@ -23,8 +23,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late Home home;
-  late ShortNoticeRepo noticeRepo;
-  late ShortNoticeVM noticeVM;
+  late ShortNoticeRepo shortNoticeRepo;
+  late ShortNoticeVM shortNoticeVM;
   late PromotionVM promotionVM;
   late RecommendVM recommendVM;
 
@@ -32,9 +32,9 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     home = Home(title: 'My Home');
-    noticeRepo = ShortNoticeRepo();
-    noticeVM = ShortNoticeVM(repo: noticeRepo);
-    noticeVM.fetchNoticeList();
+    shortNoticeRepo = ShortNoticeRepo();
+    shortNoticeVM = ShortNoticeVM(repo: shortNoticeRepo);
+    shortNoticeVM.fetchNoticeList();
     promotionVM = PromotionVM(repo: PromotionRepo());
     promotionVM.fetchPromotionList();
     recommendVM = RecommendVM(repo: RecommendRepo());
@@ -48,48 +48,69 @@ class _HomeViewState extends State<HomeView> {
         Provider(
           create: (context) => home,
         ),
-        ChangeNotifierProvider(create: (context) => noticeVM),
+        ChangeNotifierProvider(create: (context) => shortNoticeVM),
         ChangeNotifierProvider(create: (context) => promotionVM),
         ChangeNotifierProvider(create: (context) => recommendVM),
       ],
       child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            const DefaultAppBar(),
-            SliverToBoxAdapter(
-              child: TextButton(
-                child: const Text('Refresh'),
-                onPressed: () {
-                  noticeVM.fetchNoticeList();
-                },
-              ),
-            ),
-            const SliverToBoxAdapter(child: DividerView()),
-            const SliverToBoxAdapter(child: ShortNoticeSliderView()),
-            const SliverToBoxAdapter(child: DividerView()),
-            const SliverToBoxAdapter(
-              child: MainPromotionView(),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  // return Container(
-                  //   color: index.isOdd ? Colors.blue : Colors.red[200],
-                  //   height: 80,
-                  // );
-                  return MainPromotionView();
-                },
-                childCount: 10,
-              ),
-            ),
-            const SliverToBoxAdapter(child: DividerView()),
-            const SliverToBoxAdapter(child: RecommendSliderView()),
-            SliverToBoxAdapter(
-                child: Container(color: Colors.amber, height: 100)),
-          ],
-        ),
+        body: HomeBody(),
         bottomNavigationBar: const BottomNavV2(),
       ),
+    );
+  }
+}
+
+class HomeBody extends StatefulWidget {
+  const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  @override
+  Widget build(BuildContext context) {
+    print('_HomeBodyState build');
+    List<Promotion> promotionList =
+        context.select((PromotionVM vm) => vm.promotionList);
+    print('${promotionList.length}');
+    return CustomScrollView(
+      slivers: [
+        const DefaultAppBar(),
+        SliverToBoxAdapter(
+          child: TextButton(
+            child: const Text('Refresh'),
+            onPressed: () {
+              context.read<ShortNoticeVM>().fetchNoticeList();
+              context.read<PromotionVM>().fetchPromotionList();
+              context.read<RecommendVM>().fetchRecommendList();
+            },
+          ),
+        ),
+        const SliverToBoxAdapter(child: DividerView()),
+        const SliverToBoxAdapter(child: ShortNoticeSliderView()),
+        const SliverToBoxAdapter(child: DividerView()),
+        // const SliverToBoxAdapter(
+        //   child: MainPromotionView(),
+        // ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              // return Container(
+              //   color: index.isOdd ? Colors.blue : Colors.red[200],
+              //   height: 80,
+              // );
+              return MainPromotionView(
+                promotion: promotionList[index],
+              );
+            },
+            childCount: promotionList.length,
+          ),
+        ),
+        const SliverToBoxAdapter(child: DividerView()),
+        const SliverToBoxAdapter(child: RecommendSliderView()),
+        SliverToBoxAdapter(child: Container(color: Colors.amber, height: 100)),
+      ],
     );
   }
 }
