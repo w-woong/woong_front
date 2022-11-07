@@ -5,11 +5,14 @@ import 'package:woong_front/domains/home/home.dart';
 import 'package:woong_front/domains/notice/notice.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/notice/noticerepo.dart';
+import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/components/divider.dart';
+import 'package:woong_front/views/default/components/dynamic.dart';
+import 'package:woong_front/views/default/home/contents/bottominfo.dart';
 import 'package:woong_front/views/default/home/contents/mainpromotion.dart';
 import 'package:woong_front/views/default/home/contents/recommendview.dart';
 import 'package:woong_front/views/default/home/contents/shortnoticeview.dart';
@@ -27,6 +30,7 @@ class _HomeViewState extends State<HomeView> {
   late ShortNoticeVM shortNoticeVM;
   late PromotionVM promotionVM;
   late RecommendVM recommendVM;
+  late ProductVM productVM;
 
   @override
   void initState() {
@@ -39,6 +43,8 @@ class _HomeViewState extends State<HomeView> {
     promotionVM.fetchPromotionList();
     recommendVM = RecommendVM(repo: RecommendRepo());
     recommendVM.fetchRecommendList();
+    productVM = ProductVM(repo: ProductRepo());
+    productVM.fetch();
   }
 
   @override
@@ -51,10 +57,11 @@ class _HomeViewState extends State<HomeView> {
         ChangeNotifierProvider(create: (context) => shortNoticeVM),
         ChangeNotifierProvider(create: (context) => promotionVM),
         ChangeNotifierProvider(create: (context) => recommendVM),
+        ChangeNotifierProvider(create: (context) => productVM),
       ],
-      child: Scaffold(
+      child: const Scaffold(
         body: HomeBody(),
-        bottomNavigationBar: const BottomNavV2(),
+        bottomNavigationBar: BottomNavV2(),
       ),
     );
   }
@@ -109,7 +116,12 @@ class _HomeBodyState extends State<HomeBody> {
         ),
         const SliverToBoxAdapter(child: DividerView()),
         const SliverToBoxAdapter(child: RecommendSliderView()),
-        SliverToBoxAdapter(child: Container(color: Colors.amber, height: 100)),
+        const SliverToBoxAdapter(child: DividerView()),
+        const SliverToBoxAdapter(child: DynamicProductsView()),
+        const SliverToBoxAdapter(child: DividerView()),
+        const SliverToBoxAdapter(
+          child: BottomInfoView(),
+        ),
       ],
     );
   }

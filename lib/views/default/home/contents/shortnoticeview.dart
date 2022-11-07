@@ -23,7 +23,7 @@ class _ShortNoticeSliderViewState extends State<ShortNoticeSliderView> {
         context.select((ShortNoticeVM value) => value.noticeList);
 
     return Container(
-      height: 140,
+      height: 120,
       // width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -32,7 +32,7 @@ class _ShortNoticeSliderViewState extends State<ShortNoticeSliderView> {
               items: getItems(noticeList),
               carouselController: _controller,
               options: CarouselOptions(
-                height: 100,
+                height: 120,
                 viewportFraction: 1.0,
                 enlargeCenterPage: false,
                 enableInfiniteScroll: false,
@@ -99,7 +99,7 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
           //   size: 50,
           //   color: Colors.black54,
           // ),
-          ImageIcon(
+          const ImageIcon(
             // NetworkImage(widget.item.imgUrl),
             AssetImage(
                 'assets/images/icons/2x/outline_notification_important_black_24dp.png'),
@@ -117,7 +117,7 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
                   widget.item.name,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 5),
                 Text(

@@ -1,85 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:woong_front/domains/recommend/recommend.dart';
+import 'package:woong_front/domains/product/product.dart';
 
-class RecommendSliderView extends StatefulWidget {
-  const RecommendSliderView({super.key});
+class DynamicProductsView extends StatefulWidget {
+  const DynamicProductsView({super.key});
 
   @override
-  State<RecommendSliderView> createState() => _RecommendSliderViewState();
+  State<DynamicProductsView> createState() => _DynamicProductsViewState();
 }
 
-class _RecommendSliderViewState extends State<RecommendSliderView> {
+class _DynamicProductsViewState extends State<DynamicProductsView> {
   @override
   Widget build(BuildContext context) {
-    print('_RecommendSliderViewState build');
+    List<Product> products =
+        context.select((ProductVM value) => value.products);
 
     return Container(
-      margin: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(10.0),
             child: Row(
               children: [
                 Text(
-                  'Recommend',
+                  '상품',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ],
             ),
           ),
-          CarouselSlider(
-            items: getItems(
-                context.select((RecommendVM value) => value.recommendList)),
-            options: CarouselOptions(
-              height: 300,
-              enlargeCenterPage: false,
-              enableInfiniteScroll: false,
+          Container(
+            height: 300,
+            child: GridView(
+              scrollDirection: Axis.horizontal,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 150,
+                // childAspectRatio: 3 / 2,
+                // crossAxisSpacing: 20,
+                // mainAxisSpacing: 20,
+              ),
+              children: getItems(products),
             ),
-          )
+          ),
         ],
       ),
     );
-    // return CarouselSlider(
-    //   items:
-    //       getItems(context.select((RecommendVM value) => value.recommendList)),
-    //   options: CarouselOptions(
-    //     height: 300,
-    //     enlargeCenterPage: false,
-    //     enableInfiniteScroll: false,
-    //   ),
-    // );
   }
 
-  List<Widget> getItems(List<Recommend> list) {
-    return list.map((item) => RecommendView(item: item)).toList();
+  List<Widget> getItems(List<Product> list) {
+    return list.map((item) => ProductView(product: item)).toList();
   }
 }
 
-class RecommendView extends StatefulWidget {
-  Recommend item;
-  RecommendView({super.key, required this.item});
+class ProductView extends StatelessWidget {
+  final Product product;
+  const ProductView({super.key, required this.product});
 
-  @override
-  State<RecommendView> createState() => _RecommendViewState();
-}
-
-class _RecommendViewState extends State<RecommendView> {
   @override
   Widget build(BuildContext context) {
-    print('_ShortNoticeViewState build');
     return Container(
       child: Container(
-        margin: EdgeInsets.all(20.0),
+        margin: EdgeInsets.all(5.0),
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             child: Stack(
               children: <Widget>[
                 Positioned.fill(
                   child: Image.network(
-                    widget.item.imgUrl,
+                    product.imgUrl,
                     fit: BoxFit.cover,
                     width: 1000.0,
                   ),

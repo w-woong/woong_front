@@ -11,55 +11,75 @@ class MainPromotionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      child: Stack(
+    return SizedBox(
+      // height: MediaQuery.of(context).size.height * 0.6,
+      child: Column(
         children: [
-          Positioned.fill(
-            child: Image.network(
-              promotion.imgUrl,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned(
-            top: 0.0,
-            left: 0,
-            right: 0,
-            child: Container(
-              margin: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'tags',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Text(
-                    promotion.name,
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+          Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: Stack(
               children: [
-                Text('description'),
-                Expanded(child: SizedBox()),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 20.0),
-                  child: TextButton(
-                    child: Text('hey'),
-                    onPressed: () {
-                      print('pressed');
-                    },
+                Positioned.fill(
+                  child: Image.network(
+                    promotion.imgUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 0.0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    margin: const EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          promotion.tags.join(' '),
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        Text(
+                          promotion.name,
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+                left: 10.0, top: 10.0, right: 10.0, bottom: 30.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    promotion.description,
+                    maxLines: 2,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 15),
+                ElevatedButton(
+                  child: Text('buy'),
+                  onPressed: () {
+                    print('object');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[100],
+                    foregroundColor: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
               ],

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:woong_front/commons/strings.dart';
 
 class Promotion {
   String id;
   String name;
+  String description;
   String imgUrl;
+  List<String> tags;
 
-  Promotion({required this.imgUrl, required this.name}) : id = '';
+  Promotion(
+      {required this.imgUrl,
+      required this.name,
+      required this.description,
+      required this.tags})
+      : id = '';
 }
 
 class PromotionRepo {
@@ -27,7 +35,12 @@ class PromotionRepo {
       List<Promotion> list = [];
 
       for (String url in imgList) {
-        list.add(Promotion(imgUrl: url, name: 'name'));
+        list.add(Promotion(
+          imgUrl: url,
+          name: StringUtils.randomeString(20),
+          description: StringUtils.randomeString(80),
+          tags: ['new'],
+        ));
       }
       return list;
     });

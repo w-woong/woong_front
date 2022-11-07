@@ -17,7 +17,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       pinned: true,
       snap: true,
       floating: true,
-      expandedHeight: 150,
+      // expandedHeight: 150,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           '${context.select((AppConfig config) => config.title)} / ${context.select((Home value) => value.title)}',
