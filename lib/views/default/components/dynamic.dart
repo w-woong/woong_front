@@ -24,7 +24,7 @@ class _DynamicProductsViewState extends State<DynamicProductsView> {
             child: Row(
               children: [
                 Text(
-                  '상품',
+                  'Products',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ],

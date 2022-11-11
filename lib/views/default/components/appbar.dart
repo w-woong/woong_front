@@ -14,7 +14,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      pinned: true,
+      pinned: false,
       snap: true,
       floating: true,
       // expandedHeight: 150,
