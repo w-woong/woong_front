@@ -25,42 +25,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late Home home;
-  late ShortNoticeRepo shortNoticeRepo;
-  late ShortNoticeVM shortNoticeVM;
-  late PromotionVM promotionVM;
-  late RecommendVM recommendVM;
-  late ProductVM productVM;
-
   @override
   void initState() {
     super.initState();
-    home = Home(title: 'My Home');
-    shortNoticeRepo = ShortNoticeRepo();
-    shortNoticeVM = ShortNoticeVM(repo: shortNoticeRepo);
-    shortNoticeVM.fetchNoticeList();
-    promotionVM = PromotionVM(repo: PromotionRepo());
-    promotionVM.fetchPromotionList();
-    recommendVM = RecommendVM(repo: RecommendRepo());
-    recommendVM.fetchRecommendList();
-    productVM = ProductVM(repo: ProductRepo());
-    productVM.fetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(
-          create: (context) => home,
-        ),
-        ChangeNotifierProvider(create: (context) => shortNoticeVM),
-        ChangeNotifierProvider(create: (context) => promotionVM),
-        ChangeNotifierProvider(create: (context) => recommendVM),
-        ChangeNotifierProvider(create: (context) => productVM),
-      ],
-      child: HomeBody(),
-    );
+    return HomeBody();
   }
 }
 
@@ -79,6 +51,7 @@ class _HomeBodyState extends State<HomeBody> {
         context.select((PromotionVM vm) => vm.promotionList);
     print('${promotionList.length}');
     return CustomScrollView(
+      // controller: ScrollController(),
       slivers: [
         const DefaultAppBar(),
         SliverToBoxAdapter(
@@ -94,16 +67,9 @@ class _HomeBodyState extends State<HomeBody> {
         const SliverToBoxAdapter(child: DividerView()),
         const SliverToBoxAdapter(child: ShortNoticeSliderView()),
         const SliverToBoxAdapter(child: DividerView()),
-        // const SliverToBoxAdapter(
-        //   child: MainPromotionView(),
-        // ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              // return Container(
-              //   color: index.isOdd ? Colors.blue : Colors.red[200],
-              //   height: 80,
-              // );
               return MainPromotionView(
                 promotion: promotionList[index],
               );
