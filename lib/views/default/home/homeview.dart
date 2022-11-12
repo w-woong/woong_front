@@ -59,10 +59,7 @@ class _HomeViewState extends State<HomeView> {
         ChangeNotifierProvider(create: (context) => recommendVM),
         ChangeNotifierProvider(create: (context) => productVM),
       ],
-      child: const Scaffold(
-        body: HomeBody(),
-        bottomNavigationBar: BottomNavV2(),
-      ),
+      child: HomeBody(),
     );
   }
 }

@@ -74,43 +74,53 @@ class BottomNavV2 extends StatefulWidget {
   State<BottomNavV2> createState() => _BottomNavV2State();
 }
 
-class _BottomNavV2State extends State<BottomNavV2> {
-  int _selectedIndex = 0;
+const tabs = [
+  ScaffoldWithNavBarTabItem(
+    initialLocation: '/home',
+    icon: Icon(Icons.home),
+    label: 'Home',
+  ),
+  ScaffoldWithNavBarTabItem(
+    initialLocation: '/login',
+    icon: Icon(Icons.account_circle),
+    label: 'Account',
+  ),
+];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+class _BottomNavV2State extends State<BottomNavV2> {
+  int _locationToTabIndex(String location) {
+    final index = tabs
+        .indexWhere((element) => location.startsWith(element.initialLocation));
+    return index < 0 ? 0 : index;
+  }
+
+  int get _currentIndex => _locationToTabIndex(GoRouter.of(context).location);
+
+  // int _currentIndex = 0;
+  void _onItemTapped(BuildContext context, int index) {
+    if (index != _currentIndex) {
+      context.go(tabs[index].initialLocation);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-          backgroundColor: Colors.red,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Business',
-          backgroundColor: Colors.green,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'School',
-          backgroundColor: Colors.purple,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-          backgroundColor: Colors.pink,
-        ),
-      ],
-      currentIndex: _selectedIndex,
+      items: tabs,
+      currentIndex: _currentIndex,
       selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,
+      onTap: (value) {
+        _onItemTapped(context, value);
+      },
     );
   }
+}
+
+class ScaffoldWithNavBarTabItem extends BottomNavigationBarItem {
+  const ScaffoldWithNavBarTabItem(
+      {required this.initialLocation, required Widget icon, String? label})
+      : super(icon: icon, label: label);
+
+  /// The initial location/path
+  final String initialLocation;
 }
