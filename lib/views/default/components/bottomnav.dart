@@ -100,6 +100,7 @@ class _BottomNavV2State extends State<BottomNavV2> {
   void _onItemTapped(BuildContext context, int index) {
     if (index != _currentIndex) {
       context.go(tabs[index].initialLocation);
+      // context.push(tabs[index].initialLocation);
     }
   }
 

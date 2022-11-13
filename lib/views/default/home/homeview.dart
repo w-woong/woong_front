@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/domains/appconfig/appconfig.dart';
 import 'package:woong_front/domains/home/home.dart';
-import 'package:woong_front/domains/notice/notice.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
-import 'package:woong_front/domains/notice/noticerepo.dart';
-import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
-import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/components/divider.dart';
 import 'package:woong_front/views/default/components/dynamic.dart';
 import 'package:woong_front/views/default/home/contents/bottominfo.dart';
@@ -26,32 +21,51 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
+  Widget build(BuildContext context) {
+    return _HomeBody(key: UniqueKey());
+  }
+}
+
+class _HomeBody extends StatefulWidget {
+  const _HomeBody({super.key});
+
+  @override
+  State<_HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<_HomeBody> {
+  final ScrollController _scrollController = ScrollController();
+  double position = 0.0;
+
+  @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      position = _scrollController.offset;
+      context.read<Home>().position = position;
+      // print('${_scrollController.offset}');
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _scrollController.animateTo(context.read<Home>().position,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return HomeBody();
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
-}
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({super.key});
-
-  @override
-  State<HomeBody> createState() => _HomeBodyState();
-}
-
-class _HomeBodyState extends State<HomeBody> {
+  var csvKey = PageStorageKey(UniqueKey());
   @override
   Widget build(BuildContext context) {
     print('_HomeBodyState build');
     List<Promotion> promotionList =
         context.select((PromotionVM vm) => vm.promotionList);
-    print('${promotionList.length}');
     return CustomScrollView(
-      // controller: ScrollController(),
+      key: csvKey,
+      controller: _scrollController,
       slivers: [
         const DefaultAppBar(),
         SliverToBoxAdapter(

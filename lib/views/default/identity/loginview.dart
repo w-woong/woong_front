@@ -22,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return _LoginBody();
+    return _LoginBody(key: UniqueKey());
   }
 }
 
@@ -36,35 +36,78 @@ class _LoginBody extends StatefulWidget {
 class _LoginBodyState extends State<_LoginBody> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(80.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome',
-              style: Theme.of(context).textTheme.headline2,
+    print('_loginBodyState build');
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(80.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome',
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await context.read<LoginVM>().authorize();
+                        context.go('/home');
+                      } catch (e) {}
+                    },
+                    child: Text('Login with Google'),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/home');
+                    },
+                    child: Text('Home'),
+                  ),
+                  Text(context.select((LoginVM value) => value.login.tid)),
+                ],
+              ),
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                context.read<LoginVM>().authorize();
-              },
-              child: Text('Login with Google'),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                context.go('/home');
-              },
-              child: Text('Home'),
-            ),
-            Text(context.select((LoginVM value) => value.login.tid)),
-          ],
+          ),
         ),
-      ),
+      ],
     );
+
+    // return Center(
+    //   child: Container(
+    //     padding: const EdgeInsets.all(80.0),
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         Text(
+    //           'Welcome',
+    //           style: Theme.of(context).textTheme.headline2,
+    //         ),
+    //         const SizedBox(height: 24),
+    //         ElevatedButton(
+    //           onPressed: () {
+    //             try {
+    //               context.read<LoginVM>().authorize();
+    //               context.go('/home');
+    //             } catch (e) {}
+    //           },
+    //           child: Text('Login with Google'),
+    //         ),
+    //         const SizedBox(height: 24),
+    //         ElevatedButton(
+    //           onPressed: () {
+    //             context.go('/home');
+    //           },
+    //           child: Text('Home'),
+    //         ),
+    //         Text(context.select((LoginVM value) => value.login.tid)),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 

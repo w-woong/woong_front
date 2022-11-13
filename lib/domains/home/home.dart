@@ -1,5 +1,5 @@
 class Home {
   final String title;
-
-  Home({required this.title});
+  double position;
+  Home({required this.title}) : position = 0;
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:woong_front/domains/identity/login.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 
 class MainPromotionView extends StatelessWidget {
@@ -69,7 +71,9 @@ class MainPromotionView extends StatelessWidget {
                 ElevatedButton(
                   child: Text('buy'),
                   onPressed: () {
-                    print('object');
+                    if (!context.read<LoginVM>().isAuthorized()) {
+                      print('sdf');
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[100],

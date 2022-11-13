@@ -112,14 +112,22 @@ class LoginVM extends ChangeNotifier {
 
   LoginVM({required this.repo}) : login = Login.empty();
 
-  void authorize() async {
-    if (!login.isEmpty()) {
-      login = await repo.validate(login.tid, login.idToken);
-      // catch error and clear login
-      return;
-    }
+  Future<void> authorize() async {
+    try {
+      if (!login.isEmpty()) {
+        login = await repo.validate(login.tid, login.idToken);
+        return;
+      }
 
-    login = await repo.authorize();
-    notifyListeners();
+      login = await repo.authorize();
+    } catch (e) {
+      login = Login.empty();
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  bool isAuthorized() {
+    return !login.isEmpty();
   }
 }

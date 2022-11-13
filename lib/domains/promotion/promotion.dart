@@ -56,6 +56,7 @@ class PromotionVM extends ChangeNotifier {
   PromotionVM({required this.repo}) : promotionList = [];
 
   void fetchPromotionList() async {
+    print('fetching promotions');
     promotionList = await repo.getPromotionList();
     notifyListeners();
   }
