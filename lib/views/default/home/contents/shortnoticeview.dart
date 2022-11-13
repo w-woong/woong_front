@@ -23,6 +23,7 @@ class _ShortNoticeSliderViewState extends State<ShortNoticeSliderView> {
         context.select((ShortNoticeVM value) => value.noticeList);
 
     return Container(
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
       height: 120,
       // width: MediaQuery.of(context).size.width,
       child: Column(

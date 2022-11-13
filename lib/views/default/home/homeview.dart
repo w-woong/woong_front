@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woong_front/domains/home/home.dart';
+import 'package:woong_front/domains/home/homevm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
@@ -61,10 +62,6 @@ class _HomeBodyState extends State<_HomeBody> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   _scrollController.animateTo(context.read<Home>().position,
-    //       duration: Duration(milliseconds: 500), curve: Curves.ease);
-    // });
   }
 
   @override
@@ -78,7 +75,8 @@ class _HomeBodyState extends State<_HomeBody> {
   Widget build(BuildContext context) {
     print('_HomeBodyState build');
 
-    Home home = context.select((HomeVM value) => value.home);
+    HomeVM homeVM = context.select((HomeVM value) => value);
+    Home home = homeVM.home;
     List<Promotion> promotionList =
         context.select((PromotionVM vm) => vm.promotionList);
 
@@ -95,10 +93,10 @@ class _HomeBodyState extends State<_HomeBody> {
         SliverToBoxAdapter(
           child: AnimatedContainer(
             // color: Colors.amber,
-            duration: new Duration(milliseconds: 200),
-            height: context.select((HomeVM value) => value.home.isLoading)
-                ? 100
-                : 0,
+            curve: Curves.easeIn,
+            duration:
+                context.select((HomeVM value) => value.loadingAnimDuration),
+            height: context.select((HomeVM value) => value.loadingAreaHeight),
           ),
         ),
         const SliverToBoxAdapter(child: DividerView()),

@@ -8,19 +8,3 @@ class Home {
       : position = 0,
         isLoading = false;
 }
-
-class HomeVM extends ChangeNotifier {
-  Home home;
-
-  HomeVM({required this.home});
-
-  void loading() {
-    home.isLoading = true;
-    notifyListeners();
-  }
-
-  void finishedLoading() {
-    home.isLoading = false;
-    notifyListeners();
-  }
-}

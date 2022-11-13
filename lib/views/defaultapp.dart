@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 // models
 import 'package:woong_front/domains/appconfig/appconfig.dart';
 import 'package:woong_front/domains/home/home.dart';
+import 'package:woong_front/domains/home/homevm.dart';
 import 'package:woong_front/domains/identity/loginrepo.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
