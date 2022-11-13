@@ -34,21 +34,16 @@ class _HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<_HomeBody> {
-  final ScrollController _scrollController = ScrollController();
+  late ScrollController _scrollController;
   double position = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      position = _scrollController.offset;
-      context.read<Home>().position = position;
-      // print('${_scrollController.offset}');
-    });
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _scrollController.animateTo(context.read<Home>().position,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   _scrollController.animateTo(context.read<Home>().position,
+    //       duration: Duration(milliseconds: 500), curve: Curves.ease);
+    // });
   }
 
   @override
@@ -63,6 +58,13 @@ class _HomeBodyState extends State<_HomeBody> {
     print('_HomeBodyState build');
     List<Promotion> promotionList =
         context.select((PromotionVM vm) => vm.promotionList);
+
+    _scrollController =
+        ScrollController(initialScrollOffset: context.read<Home>().position);
+    _scrollController.addListener(() {
+      context.read<Home>().position = _scrollController.offset;
+    });
+
     return CustomScrollView(
       key: csvKey,
       controller: _scrollController,
