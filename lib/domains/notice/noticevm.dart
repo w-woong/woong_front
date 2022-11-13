@@ -9,7 +9,7 @@ class ShortNoticeVM extends ChangeNotifier {
 
   ShortNoticeVM({required this.repo}) : noticeList = [];
 
-  void fetchNoticeList() async {
+  Future<void> fetchNoticeList() async {
     noticeList = await repo.getNoticeList();
     notifyListeners();
   }

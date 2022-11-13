@@ -20,7 +20,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       // expandedHeight: 150,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
-          '${context.select((AppConfig config) => config.title)} / ${context.select((Home value) => value.title)}',
+          '${context.select((AppConfig config) => config.title)} / ${context.select((HomeVM value) => value.home.title)}',
         ),
         background: const FlutterLogo(),
       ),

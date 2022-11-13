@@ -20,9 +20,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  Future<void> _onRefresh() async {
+    context.read<HomeVM>().loading();
+    refreshKey.currentState?.show(atTop: false);
+    await context.read<ShortNoticeVM>().fetchNoticeList();
+    await context.read<PromotionVM>().fetchPromotionList();
+    await context.read<RecommendVM>().fetchRecommendList();
+    context.read<HomeVM>().finishedLoading();
+    // await Future.delayed(Duration(seconds: 2));
+
+    return Future<void>.value();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _HomeBody(key: UniqueKey());
+    // return _HomeBody(key: UniqueKey());
+    return RefreshIndicator(
+      key: refreshKey,
+      edgeOffset: 120,
+      displacement: 20,
+      onRefresh: _onRefresh,
+      child: _HomeBody(key: UniqueKey()),
+    );
   }
 }
 
@@ -56,13 +77,14 @@ class _HomeBodyState extends State<_HomeBody> {
   @override
   Widget build(BuildContext context) {
     print('_HomeBodyState build');
+
+    Home home = context.select((HomeVM value) => value.home);
     List<Promotion> promotionList =
         context.select((PromotionVM vm) => vm.promotionList);
 
-    _scrollController =
-        ScrollController(initialScrollOffset: context.read<Home>().position);
+    _scrollController = ScrollController(initialScrollOffset: home.position);
     _scrollController.addListener(() {
-      context.read<Home>().position = _scrollController.offset;
+      home.position = _scrollController.offset;
     });
 
     return CustomScrollView(
@@ -70,16 +92,6 @@ class _HomeBodyState extends State<_HomeBody> {
       controller: _scrollController,
       slivers: [
         const DefaultAppBar(),
-        SliverToBoxAdapter(
-          child: TextButton(
-            child: const Text('Refresh'),
-            onPressed: () {
-              context.read<ShortNoticeVM>().fetchNoticeList();
-              context.read<PromotionVM>().fetchPromotionList();
-              context.read<RecommendVM>().fetchRecommendList();
-            },
-          ),
-        ),
         const SliverToBoxAdapter(child: DividerView()),
         const SliverToBoxAdapter(child: ShortNoticeSliderView()),
         const SliverToBoxAdapter(child: DividerView()),

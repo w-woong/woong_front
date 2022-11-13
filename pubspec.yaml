@@ -44,6 +44,7 @@ dependencies:
   url_launcher_windows: ^3.0.1
   url_launcher_android: ^6.0.21
   carousel_slider: ^4.1.1
+  pull_to_refresh: ^2.0.0
 
 dev_dependencies:
   flutter_test:

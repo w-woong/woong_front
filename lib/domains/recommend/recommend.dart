@@ -42,7 +42,7 @@ class RecommendVM extends ChangeNotifier {
 
   RecommendVM({required this.repo}) : recommendList = [];
 
-  void fetchRecommendList() async {
+  Future<void> fetchRecommendList() async {
     recommendList = await repo.getRecommendList();
     notifyListeners();
   }

@@ -27,7 +27,7 @@ class DefaultApp extends StatefulWidget {
 class _DefaultAppState extends State<DefaultApp> {
   late AppConfig appConfig;
 
-  late Home home;
+  late HomeVM homeVM;
   late ShortNoticeRepo shortNoticeRepo;
   late ShortNoticeVM shortNoticeVM;
   late PromotionVM promotionVM;
@@ -41,7 +41,7 @@ class _DefaultAppState extends State<DefaultApp> {
     super.initState();
     appConfig = AppConfig(title: 'Default App');
 
-    home = Home(title: 'My Home');
+    homeVM = HomeVM(home: Home(title: 'My Home'));
     shortNoticeRepo = ShortNoticeRepo();
     shortNoticeVM = ShortNoticeVM(repo: shortNoticeRepo);
     shortNoticeVM.fetchNoticeList();
@@ -103,7 +103,7 @@ class _DefaultAppState extends State<DefaultApp> {
     return MultiProvider(
       providers: [
         Provider(create: (context) => appConfig),
-        Provider(create: (context) => home),
+        ChangeNotifierProvider(create: (context) => homeVM),
         ChangeNotifierProvider(create: (context) => shortNoticeVM),
         ChangeNotifierProvider(create: (context) => promotionVM),
         ChangeNotifierProvider(create: (context) => recommendVM),
