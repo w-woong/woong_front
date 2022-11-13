@@ -1,30 +1,7 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-
-class Login {
-  String tid;
-  String idToken;
-  int expiry;
-
-  Login({required this.tid, required this.idToken, required this.expiry});
-  Login.empty()
-      : tid = '',
-        idToken = '',
-        expiry = 0;
-
-  bool isEmpty() {
-    if (tid == '' || idToken == '' || expiry == 0) {
-      return true;
-    }
-
-    return false;
-  }
-}
+import 'package:woong_front/domains/identity/identity.dart';
 
 class LoginRepo {
   LoginRepo();
@@ -47,7 +24,7 @@ class LoginRepo {
     return authRequestID;
   }
 
-  Future<Login> _waitAuthorized(String authRequestID) async {
+  Future<Identity> _waitAuthorized(String authRequestID) async {
     var response = await http.get(Uri.parse('$waitUrl/$authRequestID'));
     if (response.statusCode != 200) {
       throw 'Could not authorize';
@@ -57,7 +34,7 @@ class LoginRepo {
     var idToken = decoded['id_token'] as String;
     var tid = decoded['tid'] as String;
     var expiry = decoded['expiry'] as int;
-    return Login(tid: tid, idToken: idToken, expiry: expiry);
+    return Identity(tid: tid, idToken: idToken, expiry: expiry);
   }
 
   // Future<void> _authorize(String authRequestID) async {
@@ -78,7 +55,7 @@ class LoginRepo {
     }
   }
 
-  Future<Login> authorize() async {
+  Future<Identity> authorize() async {
     var authRequestID = await _getAuthRequest();
     print(authRequestID);
 
@@ -86,7 +63,7 @@ class LoginRepo {
     return await _waitAuthorized(authRequestID);
   }
 
-  Future<Login> validate(String tid, String idToken) async {
+  Future<Identity> validate(String tid, String idToken) async {
     var response = await http.get(Uri.parse(validateUrl), headers: {
       "tid": tid,
       "id_token": idToken,
@@ -101,33 +78,6 @@ class LoginRepo {
     var resIDToken = decoded['id_token'] as String;
     var resTID = decoded['tid'] as String;
     var resExpiry = decoded['expiry'] as int;
-    return Login(tid: resTID, idToken: resIDToken, expiry: resExpiry);
-  }
-}
-
-class LoginVM extends ChangeNotifier {
-  LoginRepo repo;
-
-  Login login;
-
-  LoginVM({required this.repo}) : login = Login.empty();
-
-  Future<void> authorize() async {
-    try {
-      if (!login.isEmpty()) {
-        login = await repo.validate(login.tid, login.idToken);
-        return;
-      }
-
-      login = await repo.authorize();
-    } catch (e) {
-      login = Login.empty();
-    } finally {
-      notifyListeners();
-    }
-  }
-
-  bool isAuthorized() {
-    return !login.isEmpty();
+    return Identity(tid: resTID, idToken: resIDToken, expiry: resExpiry);
   }
 }

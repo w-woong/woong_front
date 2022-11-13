@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/domains/identity/login.dart';
+import 'package:woong_front/domains/identity/loginrepo.dart';
+import 'package:woong_front/domains/identity/loginvm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 
 class MainPromotionView extends StatelessWidget {
