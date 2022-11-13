@@ -92,6 +92,15 @@ class _HomeBodyState extends State<_HomeBody> {
       controller: _scrollController,
       slivers: [
         const DefaultAppBar(),
+        SliverToBoxAdapter(
+          child: AnimatedContainer(
+            // color: Colors.amber,
+            duration: new Duration(milliseconds: 200),
+            height: context.select((HomeVM value) => value.home.isLoading)
+                ? 100
+                : 0,
+          ),
+        ),
         const SliverToBoxAdapter(child: DividerView()),
         const SliverToBoxAdapter(child: ShortNoticeSliderView()),
         const SliverToBoxAdapter(child: DividerView()),
