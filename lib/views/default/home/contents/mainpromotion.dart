@@ -47,6 +47,34 @@ class MainPromotionView extends StatelessWidget {
                           promotion.name,
                           style: Theme.of(context).textTheme.displayMedium,
                         ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              // colors: [
+                              //   Color.fromARGB(100, 0, 0, 0),
+                              //   Color.fromARGB(0, 0, 0, 0)
+                              // ],
+                              colors: [
+                                Color.fromARGB(200, 0, 0, 0),
+                                Color.fromARGB(150, 0, 0, 0),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            // borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: Text(
+                            promotion.name,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

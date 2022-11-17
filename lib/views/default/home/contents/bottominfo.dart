@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:woong_front/views/default/components/divider.dart';
 
 class BottomInfoView extends StatelessWidget {
   const BottomInfoView({super.key});
@@ -7,7 +8,7 @@ class BottomInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15.0),
-      color: Colors.blueGrey[50],
+      // color: Colors.blueGrey[50],
       child: Column(
         children: [
           Row(
@@ -56,6 +57,7 @@ class BottomInfoView extends StatelessWidget {
               ),
             ],
           ),
+          const Divider(),
         ],
       ),
     );

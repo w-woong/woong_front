@@ -109,7 +109,7 @@ class _BottomNavV2State extends State<BottomNavV2> {
     return BottomNavigationBar(
       items: tabs,
       currentIndex: _currentIndex,
-      selectedItemColor: Colors.amber[800],
+      // selectedItemColor: Colors.amber[800],
       onTap: (value) {
         _onItemTapped(context, value);
       },

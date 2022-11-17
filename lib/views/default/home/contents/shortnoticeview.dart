@@ -105,7 +105,7 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
             AssetImage(
                 'assets/images/icons/2x/outline_notification_important_black_24dp.png'),
             size: 50,
-            color: Colors.black,
+            // color: Colors.black,
           ),
           const SizedBox(width: 10),
           Expanded(

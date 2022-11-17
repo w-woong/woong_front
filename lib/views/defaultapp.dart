@@ -115,6 +115,24 @@ class _DefaultAppState extends State<DefaultApp> {
         debugShowCheckedModeBanner: false,
         routerConfig: _router,
         title: 'Woong',
+        theme: ThemeData(
+          brightness: Brightness.light,
+          // primaryColor: Colors.lightBlue[800],
+          // focusColor: Colors.lightBlue[800],
+          appBarTheme: AppBarTheme(
+            backgroundColor: Theme.of(context).bottomAppBarColor,
+            foregroundColor: Colors.black,
+            titleTextStyle: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          //   selectedItemColor: Colors.lightBlue[800],
+          // ),
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        ),
       ),
     );
   }

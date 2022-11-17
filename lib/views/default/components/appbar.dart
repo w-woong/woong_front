@@ -14,23 +14,29 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      pinned: false,
+      pinned: true,
       snap: true,
       floating: true,
       // expandedHeight: 150,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+      foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           '${context.select((AppConfig config) => config.title)} / ${context.select((HomeVM value) => value.home.title)}',
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
-        background: Image.network(
-          'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=79',
-          fit: BoxFit.cover,
-        ),
+        centerTitle: true,
+        // background: Image.network(
+        //   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=79',
+        //   fit: BoxFit.cover,
+        // ),
       ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {},
-      ),
+      // automaticallyImplyLeading: false,
+      // leadingWidth: 0,
+      // leading: IconButton(
+      //   icon: Icon(Icons.arrow_back),
+      //   onPressed: () {},
+      // ),
       actions: [
         IconButton(
           icon: Icon(Icons.account_circle_outlined),
