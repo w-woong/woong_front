@@ -17,6 +17,7 @@ import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
+import 'package:woong_front/views/default/shopping/shoppingview.dart';
 
 class DefaultApp extends StatefulWidget {
   const DefaultApp({super.key});
@@ -62,7 +63,7 @@ class _DefaultAppState extends State<DefaultApp> {
     final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
     final GoRouter _router = GoRouter(
-      initialLocation: '/home',
+      initialLocation: '/shopping',
       navigatorKey: _rootNavigatorKey,
       routes: [
         ShellRoute(
@@ -85,6 +86,14 @@ class _DefaultAppState extends State<DefaultApp> {
               // },
             ),
             GoRoute(
+              path: '/shopping',
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: ShoppingView(),
+                );
+              },
+            ),
+            GoRoute(
               path: '/login',
               pageBuilder: (context, state) {
                 return NoTransitionPage(
@@ -92,9 +101,6 @@ class _DefaultAppState extends State<DefaultApp> {
                     key: state.pageKey,
                     restorationId: state.pageKey.value);
               },
-              // builder: (BuildContext context, GoRouterState state) {
-              //   return LoginView();
-              // },
             ),
           ],
         ),

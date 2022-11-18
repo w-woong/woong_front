@@ -81,6 +81,11 @@ const tabs = [
     label: 'Home',
   ),
   ScaffoldWithNavBarTabItem(
+    initialLocation: '/shopping',
+    icon: Icon(Icons.shopping_cart),
+    label: 'Shopping',
+  ),
+  ScaffoldWithNavBarTabItem(
     initialLocation: '/login',
     icon: Icon(Icons.account_circle),
     label: 'Account',

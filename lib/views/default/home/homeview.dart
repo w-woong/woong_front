@@ -89,7 +89,9 @@ class _HomeBodyState extends State<_HomeBody> {
       key: csvKey,
       controller: _scrollController,
       slivers: [
-        const DefaultAppBar(),
+        DefaultAppBar(
+          title: homeVM.home.title,
+        ),
         SliverToBoxAdapter(
           child: AnimatedContainer(
             // color: Colors.amber,
