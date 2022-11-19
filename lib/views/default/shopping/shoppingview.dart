@@ -79,82 +79,63 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
                     //   color: Colors.red[100 * (index % 9)],
                     //   child: Text('grid item'),
                     // );
-                    return GestureDetector(
-                      onTap: () {
-                        // context.go('/shopping/product');
+                    return Container(
+                      // margin: const EdgeInsets.all(5.0),
+                      color: Colors.red,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // context.go('/shopping/product');
 
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   builder: (context) {
-                        //     return ProductSheetView();
-                        //   },
-                        // );
-
-                        // showGeneralDialog(
-                        //   context: context,
-                        //   barrierDismissible: true,
-                        //   barrierLabel: MaterialLocalizations.of(context)
-                        //       .modalBarrierDismissLabel,
-                        //   barrierColor: Colors.black45,
-                        //   transitionDuration: const Duration(milliseconds: 200),
-                        //   pageBuilder: (BuildContext buildContext,
-                        //       Animation animation,
-                        //       Animation secondaryAnimation) {
-                        //     return ProductSheetView();
-                        //   },
-                        // );
-
-                        showMaterialModalBottomSheet(
-                          context: context,
-                          // expand: true,
-                          useRootNavigator: true,
-
-                          builder: (context) => ProductSheetView(),
-                        );
-                      },
-                      child: Container(
-                        // margin: const EdgeInsets.all(5.0),
-                        color: Colors.red,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          // crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ImageView.vertical(),
-                            Container(
-                              margin: EdgeInsets.all(2),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'name of the image asdf',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge,
-                                          maxLines: 2,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        '\$ 2,000',
+                              showCupertinoModalBottomSheet(
+                                context: context,
+                                expand: false,
+                                useRootNavigator: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) {
+                                  return ProductSheetView();
+                                },
+                              );
+                            },
+                            child: ImageView.vertical(),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(2),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'name of the image asdf',
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge,
+                                        maxLines: 2,
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '\$ 2,000',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
