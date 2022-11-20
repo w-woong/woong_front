@@ -19,6 +19,7 @@ import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
 import 'package:woong_front/views/default/shopping/shoppingview.dart';
+import 'package:woong_front/views/defaulttheme.dart';
 
 class DefaultApp extends StatefulWidget {
   const DefaultApp({super.key});
@@ -166,24 +167,30 @@ class _DefaultAppState extends State<DefaultApp> {
         debugShowCheckedModeBanner: false,
         routerConfig: _router,
         title: 'Woong',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.orange[800],
-          // focusColor: Colors.lightBlue[800],
-          appBarTheme: AppBarTheme(
-            backgroundColor: Theme.of(context).bottomAppBarColor,
-            foregroundColor: Colors.black,
-            titleTextStyle: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          //   selectedItemColor: Colors.lightBlue[800],
-          // ),
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-        ),
+        theme: defaultTheme,
+        darkTheme: defaultThemeDark,
+        // theme: ThemeData(
+        //   colorScheme: ColorScheme.fromSwatch(
+        //     primarySwatch: Colors.amber,
+        //   ),
+        //   brightness: Brightness.light,
+        //   // primaryColor: Colors.orange[800],
+        //   // focusColor: Colors.lightBlue[800],
+        //   appBarTheme: AppBarTheme(
+        //     backgroundColor: Theme.of(context).bottomAppBarColor,
+        //     foregroundColor: Colors.black,
+        //     titleTextStyle: TextStyle(
+        //       color: Colors.black,
+        //     ),
+        //   ),
+        //   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //   //   selectedItemColor: Colors.lightBlue[800],
+        //   // ),
+        // ),
+        // darkTheme: ThemeData(
+        //   brightness: Brightness.dark,
+        //   colorScheme: ColorScheme.dark(),
+        // ),
       ),
     );
   }

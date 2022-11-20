@@ -15,28 +15,6 @@ class ShoppingView extends StatefulWidget {
 }
 
 class _ShoppingViewState extends State<ShoppingView> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: _ShoppingBody(),
-      ),
-      bottomNavigationBar: BottomNavV2(
-        tabs: widget.bottomTabs,
-      ),
-    );
-  }
-}
-
-class _ShoppingBody extends StatefulWidget {
-  const _ShoppingBody({super.key});
-
-  @override
-  State<_ShoppingBody> createState() => _ShoppingBodyState();
-}
-
-class _ShoppingBodyState extends State<_ShoppingBody> {
   double indicatorHeight = 0.0;
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   Future<void> _onRefresh() async {
@@ -53,27 +31,41 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: RefreshIndicator(
+          displacement: MediaQuery.of(context).padding.top,
+          edgeOffset: MediaQuery.of(context).padding.top,
+          onRefresh: _onRefresh,
+          child: _ShoppingBody(),
+        ),
+      ),
+      bottomNavigationBar: BottomNavV2(
+        tabs: widget.bottomTabs,
+      ),
+    );
+  }
+}
+
+class _ShoppingBody extends StatefulWidget {
+  const _ShoppingBody({super.key});
+
+  @override
+  State<_ShoppingBody> createState() => _ShoppingBodyState();
+}
+
+class _ShoppingBodyState extends State<_ShoppingBody> {
+  @override
+  Widget build(BuildContext context) {
     int numCols = 2;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        return RefreshIndicator(
-          key: refreshKey,
-          edgeOffset: 120,
-          displacement: 20,
-          onRefresh: _onRefresh,
-          child: CustomScrollView(
-            slivers: [
-              DefaultAppBar(
-                  title: 'Shopping', showCart: true, showAccount: true),
-              SliverToBoxAdapter(
-                child: AnimatedContainer(
-                  // color: Colors.amber,
-                  curve: Curves.easeIn,
-                  duration: Duration(milliseconds: 300),
-                  height: indicatorHeight,
-                ),
-              ),
-              SliverGrid(
+        return CustomScrollView(
+          slivers: [
+            DefaultAppBar(title: 'Shopping', showCart: true, showAccount: true),
+            SliverPadding(
+              padding: EdgeInsets.all(10),
+              sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: constraints.maxWidth / numCols,
                   mainAxisExtent: 300,
@@ -154,8 +146,8 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
                   childCount: 10,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
