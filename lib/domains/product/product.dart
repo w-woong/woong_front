@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/promotion/promotion.dart';
+// import 'package:woong_front/domains/promotion/promotion.dart';
 
 class Product {
   String id;

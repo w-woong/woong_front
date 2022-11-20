@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/notice/notice.dart';
+import 'package:woong_front/domains/product/mandatory.dart';
 import 'package:woong_front/views/default/components/textview.dart';
 
-class ShortNoticeView extends StatefulWidget {
-  final ShortNotice shortNotice;
-  ShortNoticeView({super.key, required this.shortNotice});
+class MandatoryView extends StatelessWidget {
+  final Mandatory mandatory;
+  const MandatoryView({super.key, required this.mandatory});
 
-  @override
-  State<ShortNoticeView> createState() => _ShortNoticeViewState();
-}
-
-class _ShortNoticeViewState extends State<ShortNoticeView> {
   @override
   Widget build(BuildContext context) {
     return Container(
       // margin: const EdgeInsets.symmetric(horizontal: 40.0),
+      margin: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // const Icon(
-          //   Icons.delivery_dining_outlined,
-          //   size: 50,
-          //   color: Colors.black54,
-          // ),
-          const ImageIcon(
-            // NetworkImage(widget.item.imgUrl),
-            AssetImage(
-                'assets/images/icons/2x/outline_notification_important_black_24dp.png'),
-            size: 40,
-            // color: Colors.black,
+          Container(
+            width: 40,
+            padding: EdgeInsets.all(5),
+            child: Image.asset(
+              mandatory.certMarkUrl,
+              fit: BoxFit.contain,
+            ),
           ),
+          // ImageIcon(
+          //   // NetworkImage(widget.item.imgUrl),
+          //   AssetImage(mandatory.certMarkUrl),
+          //   size: 40,
+          //   // color: Colors.black,
+          // ),
           const SizedBox(width: 10),
           Expanded(
             // width: 250,
@@ -40,7 +38,7 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
               children: [
                 Row(
                   children: [
-                    Expanded(child: TitleText(widget.shortNotice.name)),
+                    Expanded(child: TitleText(mandatory.name)),
                     TextButton(
                       onPressed: () {
                         //
@@ -54,8 +52,15 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
                     )
                   ],
                 ),
-                const SizedBox(height: 5),
-                BodyText(widget.shortNotice.description),
+                const SizedBox(height: 2),
+                BodyText(mandatory.description),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    BodyText('Certificate Number:'),
+                    Expanded(child: BodyText(mandatory.certificateNumber)),
+                  ],
+                ),
               ],
             ),
           ),

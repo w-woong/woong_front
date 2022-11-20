@@ -28,6 +28,24 @@ class DefaultApp extends StatefulWidget {
   State<DefaultApp> createState() => _DefaultAppState();
 }
 
+const tabs = [
+  ScaffoldWithNavBarTabItem(
+    initialLocation: '/home',
+    icon: Icon(Icons.home),
+    label: 'Home',
+  ),
+  ScaffoldWithNavBarTabItem(
+    initialLocation: '/shopping',
+    icon: Icon(Icons.shopping_cart),
+    label: 'Shopping',
+  ),
+  ScaffoldWithNavBarTabItem(
+    initialLocation: '/login',
+    icon: Icon(Icons.account_circle),
+    label: 'Account',
+  ),
+];
+
 class _DefaultAppState extends State<DefaultApp> {
   late AppConfig appConfig;
 
@@ -65,20 +83,26 @@ class _DefaultAppState extends State<DefaultApp> {
     final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
     final GoRouter _router = GoRouter(
+      // initialLocation: '/test',
       initialLocation: '/shopping',
       navigatorKey: _rootNavigatorKey,
       routes: [
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
           builder: (context, state, child) {
-            return ScaffoldWithBottomNavBar(child: child);
+            // return ScaffoldWithBottomNavBar(child: child);
+            return Container(
+              child: child,
+            );
           },
           routes: <GoRoute>[
             GoRoute(
               path: '/home',
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                  child: HomeView(key: UniqueKey()),
+                  child: HomeView(
+                    bottomTabs: tabs,
+                  ),
                   key: state.pageKey,
                   restorationId: state.pageKey.value,
                 );
@@ -91,8 +115,10 @@ class _DefaultAppState extends State<DefaultApp> {
               path: '/shopping',
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                  // child: ShoppingView(),
-                  child: ProductSheetView(),
+                  child: ShoppingView(
+                    bottomTabs: tabs,
+                  ),
+                  // child: ProductSheetView(),
                 );
               },
               routes: [
@@ -106,7 +132,18 @@ class _DefaultAppState extends State<DefaultApp> {
               path: '/login',
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                    child: LoginView(),
+                    child: LoginView(
+                      bottomTabs: tabs,
+                    ),
+                    key: state.pageKey,
+                    restorationId: state.pageKey.value);
+              },
+            ),
+            GoRoute(
+              path: '/test',
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                    child: ProductSheetView(),
                     key: state.pageKey,
                     restorationId: state.pageKey.value);
               },
@@ -132,7 +169,7 @@ class _DefaultAppState extends State<DefaultApp> {
         title: 'Woong',
         theme: ThemeData(
           brightness: Brightness.light,
-          // primaryColor: Colors.lightBlue[800],
+          primaryColor: Colors.orange[800],
           // focusColor: Colors.lightBlue[800],
           appBarTheme: AppBarTheme(
             backgroundColor: Theme.of(context).bottomAppBarColor,
@@ -165,9 +202,15 @@ class ScaffoldWithBottomNavBar extends StatefulWidget {
 class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: BottomNavV2(),
+    return Container(
+      child: widget.child,
     );
+
+    // return Scaffold(
+    //   body: widget.child,
+    //   bottomNavigationBar: const BottomNavV2(
+    //     tabs: tabs,
+    //   ),
+    // );
   }
 }

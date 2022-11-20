@@ -6,6 +6,7 @@ import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
+import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/components/divider.dart';
 import 'package:woong_front/views/default/components/dynamic.dart';
 import 'package:woong_front/views/default/home/contents/bottominfo.dart';
@@ -14,7 +15,8 @@ import 'package:woong_front/views/default/home/contents/recommendview.dart';
 import 'package:woong_front/views/default/home/contents/shortnoticeview.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  final List<ScaffoldWithNavBarTabItem> bottomTabs;
+  const HomeView({super.key, required this.bottomTabs});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -38,12 +40,18 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     // return _HomeBody(key: UniqueKey());
-    return RefreshIndicator(
-      key: refreshKey,
-      edgeOffset: 120,
-      displacement: 20,
-      onRefresh: _onRefresh,
-      child: _HomeBody(key: UniqueKey()),
+
+    return Scaffold(
+      body: RefreshIndicator(
+        key: refreshKey,
+        edgeOffset: 120,
+        displacement: 20,
+        onRefresh: _onRefresh,
+        child: const _HomeBody(),
+      ),
+      bottomNavigationBar: BottomNavV2(
+        tabs: widget.bottomTabs,
+      ),
     );
   }
 }
@@ -90,8 +98,7 @@ class _HomeBodyState extends State<_HomeBody> {
       controller: _scrollController,
       slivers: [
         DefaultAppBar(
-          title: homeVM.home.title,
-        ),
+            title: homeVM.home.title, showCart: true, showAccount: true),
         SliverToBoxAdapter(
           child: AnimatedContainer(
             // color: Colors.amber,

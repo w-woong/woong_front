@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:woong_front/domains/identity/loginvm.dart';
+import 'package:woong_front/views/default/components/bottomnav.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+  final List<ScaffoldWithNavBarTabItem> bottomTabs;
+  const LoginView({super.key, required this.bottomTabs});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -19,7 +21,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return _LoginBody(key: UniqueKey());
+    // return _LoginBody(key: UniqueKey());
+    return Scaffold(
+      body: _LoginBody(),
+      bottomNavigationBar: BottomNavV2(tabs: widget.bottomTabs),
+    );
   }
 }
 

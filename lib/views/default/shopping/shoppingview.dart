@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
+import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/components/imageview.dart';
 import 'package:woong_front/views/default/product/product_sheet.dart';
 
 class ShoppingView extends StatefulWidget {
-  const ShoppingView({super.key});
+  final List<ScaffoldWithNavBarTabItem> bottomTabs;
+  const ShoppingView({super.key, required this.bottomTabs});
 
   @override
   State<ShoppingView> createState() => _ShoppingViewState();
@@ -15,7 +17,12 @@ class ShoppingView extends StatefulWidget {
 class _ShoppingViewState extends State<ShoppingView> {
   @override
   Widget build(BuildContext context) {
-    return _ShoppingBody();
+    return Scaffold(
+      body: _ShoppingBody(),
+      bottomNavigationBar: BottomNavV2(
+        tabs: widget.bottomTabs,
+      ),
+    );
   }
 }
 
@@ -53,9 +60,8 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
           onRefresh: _onRefresh,
           child: CustomScrollView(
             slivers: [
-              const DefaultAppBar(
-                title: 'Shopping',
-              ),
+              DefaultAppBar(
+                  title: 'Shopping', showCart: true, showAccount: true),
               SliverToBoxAdapter(
                 child: AnimatedContainer(
                   // color: Colors.amber,
