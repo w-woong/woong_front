@@ -4,7 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/components/imageview.dart';
-import 'package:woong_front/views/default/product/product_sheet.dart';
+import 'package:woong_front/views/default/product/product_detail_view.dart';
 
 class ShoppingView extends StatefulWidget {
   final List<ScaffoldWithNavBarTabItem> bottomTabs;
@@ -18,7 +18,10 @@ class _ShoppingViewState extends State<ShoppingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _ShoppingBody(),
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: _ShoppingBody(),
+      ),
       bottomNavigationBar: BottomNavV2(
         tabs: widget.bottomTabs,
       ),
@@ -87,7 +90,10 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
                     // );
                     return Container(
                       // margin: const EdgeInsets.all(5.0),
-                      color: Colors.red,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -102,7 +108,7 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
                                 useRootNavigator: true,
                                 backgroundColor: Colors.transparent,
                                 builder: (context) {
-                                  return ProductSheetView();
+                                  return ProductDetailView();
                                 },
                               );
                             },

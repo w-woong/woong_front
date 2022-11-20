@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:woong_front/commons/strings.dart';
@@ -13,27 +14,25 @@ import 'package:woong_front/views/default/components/textview.dart';
 import 'package:woong_front/views/default/product/contents/bottombar.dart';
 import 'package:woong_front/views/default/product/contents/madatory.dart';
 
-class ProductSheetView extends StatefulWidget {
-  const ProductSheetView({super.key});
+class ProductDetailView extends StatefulWidget {
+  const ProductDetailView({super.key});
 
   @override
-  State<ProductSheetView> createState() => _ProductSheetViewState();
+  State<ProductDetailView> createState() => _ProductDetailViewState();
 }
 
-class _ProductSheetViewState extends State<ProductSheetView> {
+class _ProductDetailViewState extends State<ProductDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        controller: ScrollController(),
-        physics: ScrollPhysics(parent: PageScrollPhysics()),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            DefaultAppBar(title: 'Product'),
-          ];
-        },
-        body: _ProductBody(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Product',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
+      body: _ProductBody(),
       bottomNavigationBar: const BottomBar(),
     );
   }
@@ -54,23 +53,9 @@ class _ProductBodyState extends State<_ProductBody> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      shrinkWrap: true,
       controller: ModalScrollController.of(context),
       slivers: [
-        // SliverToBoxAdapter(
-        //   child: Container(
-        //     // height: 70,
-        //     height: null,
-        //     color: Colors.red,
-        //     child: Container(
-        //       // height: 100,
-        //       color: Colors.amber,
-        //       child: Text(
-        //         'a',
-        //         style: Theme.of(context).textTheme.headline1,
-        //       ),
-        //     ),
-        //   ),
-        // ),
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: ImageCarouselSlider(
@@ -146,7 +131,7 @@ class _ProductBodyState extends State<_ProductBody> {
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(20),
             child: NoticeView(
               notice: Notice(title: 'Refund', messages: [
                 StringUtils.randomeString(50),
@@ -159,7 +144,7 @@ class _ProductBodyState extends State<_ProductBody> {
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(20),
             child: NoticeView(
               notice: Notice(title: 'Exchange', messages: [
                 StringUtils.randomeString(50),
@@ -172,7 +157,7 @@ class _ProductBodyState extends State<_ProductBody> {
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(20),
             child: NoticeView(
               notice: Notice(title: 'AS', messages: [
                 StringUtils.randomeString(50),

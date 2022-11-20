@@ -17,8 +17,7 @@ import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
-import 'package:woong_front/views/default/product/product_detail.dart';
-import 'package:woong_front/views/default/product/product_sheet.dart';
+import 'package:woong_front/views/default/product/product_detail_view.dart';
 import 'package:woong_front/views/default/shopping/shoppingview.dart';
 
 class DefaultApp extends StatefulWidget {
@@ -124,7 +123,7 @@ class _DefaultAppState extends State<DefaultApp> {
               routes: [
                 GoRoute(
                   path: 'product',
-                  builder: (context, state) => ProductSheetView(),
+                  builder: (context, state) => ProductDetailView(),
                 ),
               ],
             ),
@@ -143,7 +142,7 @@ class _DefaultAppState extends State<DefaultApp> {
               path: '/test',
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                    child: ProductSheetView(),
+                    child: ProductDetailView(),
                     key: state.pageKey,
                     restorationId: state.pageKey.value);
               },
