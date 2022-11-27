@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 
 // models
 import 'package:woong_front/domains/appconfig/appconfig.dart';
+import 'package:woong_front/domains/appconfig/appconfig_repo.dart';
+import 'package:woong_front/domains/appconfig/appconfig_vm.dart';
 import 'package:woong_front/domains/home/home.dart';
-import 'package:woong_front/domains/home/homevm.dart';
+import 'package:woong_front/domains/home/home_repo.dart';
+import 'package:woong_front/domains/home/home_vm.dart';
 import 'package:woong_front/domains/identity/loginrepo.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
@@ -15,6 +18,7 @@ import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 
 import 'package:woong_front/views/default/components/bottomnav.dart';
+import 'package:woong_front/constants/constants.dart';
 import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
@@ -47,7 +51,8 @@ const tabs = [
 ];
 
 class _DefaultAppState extends State<DefaultApp> {
-  late AppConfig appConfig;
+  // late AppConfig appConfig;
+  late AppConfigVM appConfigVM;
 
   late HomeVM homeVM;
   late ShortNoticeRepo shortNoticeRepo;
@@ -61,9 +66,15 @@ class _DefaultAppState extends State<DefaultApp> {
   @override
   void initState() {
     super.initState();
-    appConfig = AppConfig(title: 'Default App');
 
-    homeVM = HomeVM(home: Home(title: 'My Home'));
+    appConfigVM = AppConfigVM(
+        repo: AppConfigHttp(AppConstant.woongUrl, AppConstant.bearerToken));
+    appConfigVM.fetch(AppConstant.appID);
+
+    homeVM = HomeVM(
+        homeRepo: HomeHttp(AppConstant.woongUrl, AppConstant.bearerToken));
+    homeVM.fetch(AppConstant.appID);
+
     shortNoticeRepo = ShortNoticeRepo();
     shortNoticeVM = ShortNoticeVM(repo: shortNoticeRepo);
     shortNoticeVM.fetchNoticeList();
@@ -79,21 +90,22 @@ class _DefaultAppState extends State<DefaultApp> {
 
   @override
   Widget build(BuildContext context) {
-    final _rootNavigatorKey = GlobalKey<NavigatorState>();
-    final _shellNavigatorKey = GlobalKey<NavigatorState>();
+    final rootNavigatorKey = GlobalKey<NavigatorState>();
+    final shellNavigatorKey = GlobalKey<NavigatorState>();
 
-    final GoRouter _router = GoRouter(
+    final GoRouter router = GoRouter(
       // initialLocation: '/test',
-      initialLocation: '/shopping',
-      navigatorKey: _rootNavigatorKey,
+      // initialLocation: '/shopping',
+      initialLocation: '/home',
+      navigatorKey: rootNavigatorKey,
       routes: [
         ShellRoute(
-          navigatorKey: _shellNavigatorKey,
+          navigatorKey: shellNavigatorKey,
           builder: (context, state, child) {
-            // return ScaffoldWithBottomNavBar(child: child);
-            return Container(
-              child: child,
-            );
+            return ScaffoldWithBottomNavBar(child: child);
+            // return Container(
+            //   child: child,
+            // );
           },
           routes: <GoRoute>[
             GoRoute(
@@ -155,7 +167,8 @@ class _DefaultAppState extends State<DefaultApp> {
 
     return MultiProvider(
       providers: [
-        Provider(create: (context) => appConfig),
+        // Provider(create: (context) => appConfig),
+        ChangeNotifierProvider(create: (context) => appConfigVM),
         ChangeNotifierProvider(create: (context) => homeVM),
         ChangeNotifierProvider(create: (context) => shortNoticeVM),
         ChangeNotifierProvider(create: (context) => promotionVM),
@@ -163,60 +176,50 @@ class _DefaultAppState extends State<DefaultApp> {
         ChangeNotifierProvider(create: (context) => productVM),
         ChangeNotifierProvider(create: (context) => loginVM),
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: _router,
-        title: 'Woong',
-        theme: defaultTheme,
-        darkTheme: defaultThemeDark,
-        // theme: ThemeData(
-        //   colorScheme: ColorScheme.fromSwatch(
-        //     primarySwatch: Colors.amber,
-        //   ),
-        //   brightness: Brightness.light,
-        //   // primaryColor: Colors.orange[800],
-        //   // focusColor: Colors.lightBlue[800],
-        //   appBarTheme: AppBarTheme(
-        //     backgroundColor: Theme.of(context).bottomAppBarColor,
-        //     foregroundColor: Colors.black,
-        //     titleTextStyle: TextStyle(
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        //   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        //   //   selectedItemColor: Colors.lightBlue[800],
-        //   // ),
-        // ),
-        // darkTheme: ThemeData(
-        //   brightness: Brightness.dark,
-        //   colorScheme: ColorScheme.dark(),
-        // ),
-      ),
+      child: DefaultMaterialApp(router: router),
     );
   }
 }
 
-class ScaffoldWithBottomNavBar extends StatefulWidget {
-  const ScaffoldWithBottomNavBar({super.key, required this.child});
-  final Widget child;
+class DefaultMaterialApp extends StatefulWidget {
+  RouterConfig<Object> router;
+  DefaultMaterialApp({super.key, required this.router});
 
   @override
-  State<ScaffoldWithBottomNavBar> createState() =>
-      _ScaffoldWithBottomNavBarState();
+  State<DefaultMaterialApp> createState() => _DefaultMaterialAppState();
 }
 
-class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
+class _DefaultMaterialAppState extends State<DefaultMaterialApp> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: widget.child,
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: widget.router,
+      title: context.select((AppConfigVM vm) => vm.appConfig.name),
+      theme: defaultTheme,
+      darkTheme: defaultThemeDark,
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSwatch(
+      //     primarySwatch: Colors.amber,
+      //   ),
+      //   brightness: Brightness.light,
+      //   // primaryColor: Colors.orange[800],
+      //   // focusColor: Colors.lightBlue[800],
+      //   appBarTheme: AppBarTheme(
+      //     backgroundColor: Theme.of(context).bottomAppBarColor,
+      //     foregroundColor: Colors.black,
+      //     titleTextStyle: TextStyle(
+      //       color: Colors.black,
+      //     ),
+      //   ),
+      //   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      //   //   selectedItemColor: Colors.lightBlue[800],
+      //   // ),
+      // ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   colorScheme: ColorScheme.dark(),
+      // ),
     );
-
-    // return Scaffold(
-    //   body: widget.child,
-    //   bottomNavigationBar: const BottomNavV2(
-    //     tabs: tabs,
-    //   ),
-    // );
   }
 }

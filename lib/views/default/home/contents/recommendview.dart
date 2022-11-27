@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:woong_front/domains/home/home_vm.dart';
+import 'package:woong_front/domains/product/group.dart';
+import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 
 class RecommendSliderView extends StatefulWidget {
@@ -14,7 +17,16 @@ class _RecommendSliderViewState extends State<RecommendSliderView> {
   @override
   Widget build(BuildContext context) {
     print('_RecommendSliderViewState build');
-
+    List<Group> mainProducts =
+        context.select((HomeVM vm) => vm.home.mainProducts);
+    print(mainProducts);
+    List<Product> recommendedProducts = context.select((HomeVM vm) {
+      var mainProducts = vm.home.mainProducts;
+      if (mainProducts.isEmpty) {
+        return [];
+      }
+      return mainProducts[0].products;
+    });
     return Container(
       margin: EdgeInsets.all(10.0),
       child: Column(
@@ -31,8 +43,7 @@ class _RecommendSliderViewState extends State<RecommendSliderView> {
             ),
           ),
           CarouselSlider(
-            items: getItems(
-                context.select((RecommendVM value) => value.recommendList)),
+            items: getProducts(recommendedProducts),
             options: CarouselOptions(
               height: 300,
               enlargeCenterPage: false,
@@ -53,13 +64,16 @@ class _RecommendSliderViewState extends State<RecommendSliderView> {
     // );
   }
 
-  List<Widget> getItems(List<Recommend> list) {
+  // List<Widget> getItems(List<Recommend> list) {
+  //   return list.map((item) => RecommendView(item: item)).toList();
+  // }
+  List<Widget> getProducts(List<Product> list) {
     return list.map((item) => RecommendView(item: item)).toList();
   }
 }
 
 class RecommendView extends StatefulWidget {
-  Recommend item;
+  Product item;
   RecommendView({super.key, required this.item});
 
   @override

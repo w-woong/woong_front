@@ -39,6 +39,31 @@ class _BottomNavV2State extends State<BottomNavV2> {
   }
 }
 
+class ScaffoldWithBottomNavBar extends StatefulWidget {
+  const ScaffoldWithBottomNavBar({super.key, required this.child});
+  final Widget child;
+
+  @override
+  State<ScaffoldWithBottomNavBar> createState() =>
+      _ScaffoldWithBottomNavBarState();
+}
+
+class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: widget.child,
+    );
+
+    // return Scaffold(
+    //   body: widget.child,
+    //   bottomNavigationBar: const BottomNavV2(
+    //     tabs: tabs,
+    //   ),
+    // );
+  }
+}
+
 class ScaffoldWithNavBarTabItem extends BottomNavigationBarItem {
   const ScaffoldWithNavBarTabItem(
       {required this.initialLocation, required Widget icon, String? label})

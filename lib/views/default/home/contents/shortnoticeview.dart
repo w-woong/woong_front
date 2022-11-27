@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:woong_front/domains/home/home_vm.dart';
 import 'package:woong_front/domains/notice/notice.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 
@@ -17,10 +18,10 @@ class _ShortNoticeSliderViewState extends State<ShortNoticeSliderView> {
 
   @override
   Widget build(BuildContext context) {
-    print('_ShortNoticeSliderViewState build');
+    // print('_ShortNoticeSliderViewState build');
 
     List<ShortNotice> noticeList =
-        context.select((ShortNoticeVM value) => value.noticeList);
+        context.select((HomeVM value) => value.home.shortNoticeList);
 
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
@@ -87,7 +88,7 @@ class ShortNoticeView extends StatefulWidget {
 class _ShortNoticeViewState extends State<ShortNoticeView> {
   @override
   Widget build(BuildContext context) {
-    print('_ShortNoticeViewState build');
+    // print('_ShortNoticeViewState build');
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -100,18 +101,21 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
           //   size: 50,
           //   color: Colors.black54,
           // ),
-          const ImageIcon(
+          ImageIcon(
             // NetworkImage(widget.item.imgUrl),
-            AssetImage(
-                'assets/images/icons/2x/outline_notification_important_black_24dp.png'),
-            size: 50,
+            widget.item.imgUrl == ''
+                ? null
+                : AssetImage(
+                    'assets/images/icons/2x/outline_notification_important_black_24dp.png',
+                  ),
+            size: widget.item.imgUrl == '' ? 0 : 50,
             // color: Colors.black,
           ),
           const SizedBox(width: 10),
           Expanded(
             // width: 250,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -128,7 +132,6 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
                   maxLines: 2,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                // const SizedBox(height: 5),
                 TextButton(
                   onPressed: () {
                     print('object');
@@ -147,46 +150,5 @@ class _ShortNoticeViewState extends State<ShortNoticeView> {
         ],
       ),
     );
-
-    // return Container(
-    //   child: Container(
-    //     margin: EdgeInsets.all(5.0),
-    //     child: ClipRRect(
-    //         borderRadius: BorderRadius.all(Radius.circular(5.0)),
-    //         child: Stack(
-    //           children: <Widget>[
-    //             Image.network(widget.item.imgUrl,
-    //                 fit: BoxFit.cover, width: 1000.0),
-    //             Positioned(
-    //               bottom: 0.0,
-    //               left: 0.0,
-    //               right: 0.0,
-    //               child: Container(
-    //                 decoration: const BoxDecoration(
-    //                   gradient: LinearGradient(
-    //                     colors: [
-    //                       Color.fromARGB(200, 0, 0, 0),
-    //                       Color.fromARGB(0, 0, 0, 0)
-    //                     ],
-    //                     begin: Alignment.bottomCenter,
-    //                     end: Alignment.topCenter,
-    //                   ),
-    //                 ),
-    //                 padding: const EdgeInsets.symmetric(
-    //                     vertical: 10.0, horizontal: 20.0),
-    //                 child: const Text(
-    //                   'No. image',
-    //                   style: TextStyle(
-    //                     color: Colors.white,
-    //                     fontSize: 20.0,
-    //                     fontWeight: FontWeight.bold,
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         )),
-    //   ),
-    // );
   }
 }

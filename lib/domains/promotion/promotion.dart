@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woong_front/commons/strings.dart';
+import 'package:woong_front/domains/common/tag.dart';
 
 class Promotion {
   String id;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String homeID;
   String name;
   String description;
   String imgUrl;
-  List<String> tags;
+  List<Tag> tags;
 
   Promotion(
-      {required this.imgUrl,
+      {required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.homeID,
+      required this.imgUrl,
       required this.name,
       required this.description,
-      required this.tags})
-      : id = '';
+      required this.tags});
+
+  Promotion.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        createdAt =
+            DateTime.parse(json['created_at'] ?? "2006-01-02T01:01:01+09:00"),
+        updatedAt =
+            DateTime.parse(json['updated_at'] ?? "2006-01-02T01:01:01+09:00"),
+        homeID = json['home_id'],
+        imgUrl = json['img_url'],
+        name = json['name'],
+        description = json['description'],
+        tags = (json['tags'] as List).map((e) => Tag.fromJson(e)).toList();
+
+  String getJoinedTags() {
+    return tags.map((e) => e.name).toList().join(' ');
+  }
 }
 
 class PromotionRepo {
@@ -36,10 +59,14 @@ class PromotionRepo {
 
       for (String url in imgList) {
         list.add(Promotion(
+          id: '',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          homeID: '',
           imgUrl: url,
           name: StringUtils.randomeString(20),
           description: StringUtils.randomeString(80),
-          tags: ['new'],
+          tags: [],
         ));
       }
       return list;

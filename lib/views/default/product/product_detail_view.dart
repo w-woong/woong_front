@@ -104,7 +104,13 @@ class _ProductBodyState extends State<_ProductBody> {
             padding: EdgeInsets.all(10),
             child: ShortNoticeView(
               shortNotice: ShortNotice(
-                  imgUrl: '', name: 'Delivery', description: 'It is free.'),
+                  id: '',
+                  homeID: '',
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                  imgUrl: '',
+                  name: 'Delivery',
+                  description: 'It is free.'),
             ),
           ),
         ),

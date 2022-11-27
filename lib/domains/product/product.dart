@@ -3,12 +3,29 @@ import 'package:flutter/material.dart';
 
 class Product {
   String id;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String imgUrl;
   String name;
   double price;
-  String imgUrl;
+  String description;
 
   Product({required this.name, required this.price, required this.imgUrl})
-      : id = '';
+      : id = '',
+        createdAt = DateTime.now(),
+        updatedAt = DateTime.now(),
+        description = '';
+
+  Product.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        createdAt =
+            DateTime.parse(json['created_at'] ?? "2006-01-02T01:01:01+09:00"),
+        updatedAt =
+            DateTime.parse(json['updated_at'] ?? "2006-01-02T01:01:01+09:00"),
+        imgUrl = json['img_url'],
+        name = json['name'],
+        price = json['price'].toDouble(),
+        description = json['description'];
 }
 
 class ProductRepo {

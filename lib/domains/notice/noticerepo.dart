@@ -20,6 +20,10 @@ class ShortNoticeRepo {
 
       for (String url in imgList) {
         list.add(ShortNotice(
+            id: "",
+            homeID: "",
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
             imgUrl: url,
             name: StringUtils.randomeString(20),
             description: StringUtils.randomeString(80)));

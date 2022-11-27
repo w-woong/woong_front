@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woong_front/domains/home/home.dart';
-import 'package:woong_front/domains/home/homevm.dart';
+import 'package:woong_front/domains/home/home_vm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
+import 'package:woong_front/domains/product/group.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
+import 'package:woong_front/views/default/commonviews/group_product_horizontal_grid_view.dart';
+import 'package:woong_front/views/default/commonviews/group_product_view.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/components/divider.dart';
@@ -28,8 +31,8 @@ class _HomeViewState extends State<HomeView> {
   Future<void> _onRefresh() async {
     context.read<HomeVM>().loading();
     refreshKey.currentState?.show(atTop: false);
-    await context.read<ShortNoticeVM>().fetchNoticeList();
-    await context.read<PromotionVM>().fetchPromotionList();
+    // await context.read<ShortNoticeVM>().fetchNoticeList();
+    // await context.read<PromotionVM>().fetchPromotionList();
     await context.read<RecommendVM>().fetchRecommendList();
     context.read<HomeVM>().finishedLoading();
     // await Future.delayed(Duration(seconds: 2));
@@ -84,13 +87,14 @@ class _HomeBodyState extends State<_HomeBody> {
     print('_HomeBodyState build');
 
     HomeVM homeVM = context.select((HomeVM value) => value);
-    Home home = homeVM.home;
+    // Home home = homeVM.home;
     List<Promotion> promotionList =
-        context.select((PromotionVM vm) => vm.promotionList);
+        context.select((HomeVM value) => value.home.mainPromotionList);
+    List<Group> mainProducts = homeVM.home.mainProducts;
 
-    _scrollController = ScrollController(initialScrollOffset: home.position);
+    _scrollController = ScrollController(initialScrollOffset: homeVM.position);
     _scrollController.addListener(() {
-      home.position = _scrollController.offset;
+      homeVM.position = _scrollController.offset;
     });
 
     return CustomScrollView(
@@ -98,7 +102,7 @@ class _HomeBodyState extends State<_HomeBody> {
       controller: _scrollController,
       slivers: [
         DefaultAppBar(
-            title: homeVM.home.title, showCart: true, showAccount: true),
+            title: homeVM.home.name, showCart: true, showAccount: true),
         SliverToBoxAdapter(
           child: AnimatedContainer(
             // color: Colors.amber,
@@ -119,6 +123,34 @@ class _HomeBodyState extends State<_HomeBody> {
               );
             },
             childCount: promotionList.length,
+          ),
+        ),
+        const SliverToBoxAdapter(child: DividerView()),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (mainProducts[index].products.isEmpty) {
+                return null;
+              }
+              return GroupProductView(
+                group: mainProducts[index],
+              );
+            },
+            childCount: mainProducts.length,
+          ),
+        ),
+        const SliverToBoxAdapter(child: DividerView()),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              if (mainProducts[index].products.isEmpty) {
+                return null;
+              }
+              return GroupProductHorizontalGridView(
+                group: mainProducts[index],
+              );
+            },
+            childCount: mainProducts.length,
           ),
         ),
         const SliverToBoxAdapter(child: DividerView()),

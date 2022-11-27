@@ -34,23 +34,23 @@ class MainPromotionView extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Container(
-                    margin: const EdgeInsets.all(10.0),
+                    // margin: const EdgeInsets.all(10.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          promotion.tags.join(' '),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        Text(
-                          promotion.name,
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
+                        // Text(
+                        //   promotion.getJoinedTags(),
+                        //   style: Theme.of(context).textTheme.bodyLarge,
+                        // ),
+                        // Text(
+                        //   promotion.name,
+                        //   style: Theme.of(context).textTheme.displayMedium,
+                        // ),
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                               // colors: [
                               //   Color.fromARGB(100, 0, 0, 0),
                               //   Color.fromARGB(0, 0, 0, 0)
@@ -66,13 +66,29 @@ class MainPromotionView extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
-                          child: Text(
-                            promotion.name,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                promotion.getJoinedTags(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                promotion.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ],
