@@ -5,6 +5,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:woong_front/commons/strings.dart';
 import 'package:woong_front/domains/notice/notice.dart';
 import 'package:woong_front/domains/product/mandatory.dart';
+import 'package:woong_front/domains/product/product.dart';
+import 'package:woong_front/domains/product/product_detail_repo.dart';
+import 'package:woong_front/domains/product/product_detail_vm.dart';
 import 'package:woong_front/views/default/commonviews/noticeview.dart';
 import 'package:woong_front/views/default/commonviews/short_notice.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
@@ -13,9 +16,12 @@ import 'package:woong_front/views/default/components/divider.dart';
 import 'package:woong_front/views/default/components/textview.dart';
 import 'package:woong_front/views/default/product/contents/bottombar.dart';
 import 'package:woong_front/views/default/product/contents/madatory.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailView extends StatefulWidget {
-  const ProductDetailView({super.key});
+  final Product product;
+  const ProductDetailView({super.key, required this.product});
 
   @override
   State<ProductDetailView> createState() => _ProductDetailViewState();
@@ -23,27 +29,38 @@ class ProductDetailView extends StatefulWidget {
 
 class _ProductDetailViewState extends State<ProductDetailView> {
   @override
+  void initState() {
+    print('_ProductDetailViewState initState');
+    super.initState();
+    // productDetailVM.fetch(widget.product.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('_ProductDetailViewState ${widget.product.id}');
+    context.read<ProductDetailVM>().fetch(widget.product.id);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Product',
+          widget.product.name,
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: _ProductBody(),
+      body: _ProductBody(
+          product: context.select((ProductDetailVM vm) => vm.product)),
       bottomNavigationBar: const BottomBar(),
     );
   }
 }
 
 class _ProductBody extends StatefulWidget {
-  final imgList = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  ];
-  _ProductBody({super.key});
+  final Product product;
+  // final imgList = [
+  //   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  //   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  // ];
+  const _ProductBody({super.key, required this.product});
 
   @override
   State<_ProductBody> createState() => _ProductBodyState();
@@ -59,7 +76,7 @@ class _ProductBodyState extends State<_ProductBody> {
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: ImageCarouselSlider(
-            imgList: widget.imgList,
+            imgList: widget.product.topImgUrlList,
             height: MediaQuery.of(context).size.height * 0.6,
           ),
         ),
@@ -67,7 +84,7 @@ class _ProductBodyState extends State<_ProductBody> {
         SliverToBoxAdapter(
           child: Container(
             // color: Colors.amber,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -75,20 +92,18 @@ class _ProductBodyState extends State<_ProductBody> {
                   children: [
                     Expanded(
                       child: TitleLargeText(
-                        text: 'Product Name',
+                        text: widget.product.name,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: TitleLargeText(
-                        text: '₩ 2,000',
+                        text: '₩ ${widget.product.price}',
                         align: TextAlign.start,
                       ),
                     ),
@@ -101,7 +116,7 @@ class _ProductBodyState extends State<_ProductBody> {
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: ShortNoticeView(
               shortNotice: ShortNotice(
                   id: '',

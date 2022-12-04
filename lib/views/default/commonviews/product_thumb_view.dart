@@ -96,7 +96,9 @@ class _ProductThumbWithBottomState extends State<ProductThumbWithBottom> {
                       useRootNavigator: true,
                       backgroundColor: Colors.transparent,
                       builder: (context) {
-                        return ProductDetailView();
+                        return ProductDetailView(
+                          product: widget.product,
+                        );
                       },
                     );
                   },

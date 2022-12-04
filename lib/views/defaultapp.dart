@@ -14,6 +14,8 @@ import 'package:woong_front/domains/identity/loginvm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/notice/noticerepo.dart';
 import 'package:woong_front/domains/product/product.dart';
+import 'package:woong_front/domains/product/product_detail_repo.dart';
+import 'package:woong_front/domains/product/product_detail_vm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 
@@ -60,6 +62,7 @@ class _DefaultAppState extends State<DefaultApp> {
   late PromotionVM promotionVM;
   late RecommendVM recommendVM;
   late ProductVM productVM;
+  late ProductDetailVM productDetailVM;
 
   late LoginVM loginVM;
 
@@ -84,6 +87,8 @@ class _DefaultAppState extends State<DefaultApp> {
     recommendVM.fetchRecommendList();
     productVM = ProductVM(repo: ProductRepo());
     productVM.fetch();
+    productDetailVM =
+        ProductDetailVM(repo: ProductDetailDummy(), product: Product.empty());
 
     loginVM = LoginVM(repo: LoginRepo());
   }
@@ -136,7 +141,9 @@ class _DefaultAppState extends State<DefaultApp> {
               routes: [
                 GoRoute(
                   path: 'product',
-                  builder: (context, state) => ProductDetailView(),
+                  builder: (context, state) => ProductDetailView(
+                    product: Product.empty(),
+                  ),
                 ),
               ],
             ),
@@ -155,7 +162,9 @@ class _DefaultAppState extends State<DefaultApp> {
               path: '/test',
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                    child: ProductDetailView(),
+                    child: ProductDetailView(
+                      product: Product.empty(),
+                    ),
                     key: state.pageKey,
                     restorationId: state.pageKey.value);
               },
@@ -174,6 +183,7 @@ class _DefaultAppState extends State<DefaultApp> {
         ChangeNotifierProvider(create: (context) => promotionVM),
         ChangeNotifierProvider(create: (context) => recommendVM),
         ChangeNotifierProvider(create: (context) => productVM),
+        ChangeNotifierProvider(create: (context) => productDetailVM),
         ChangeNotifierProvider(create: (context) => loginVM),
       ],
       child: DefaultMaterialApp(router: router),

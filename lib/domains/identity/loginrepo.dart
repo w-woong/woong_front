@@ -1,31 +1,43 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:woong_front/constants/constants.dart';
 import 'package:woong_front/domains/identity/identity.dart';
 
 class LoginRepo {
   LoginRepo();
 
-  final String startUrl = 'https://localhost:5558/authrequest';
-  final String waitUrl = 'https://localhost:5558/authrequest';
-  final String authUrl = 'https://localhost:5558/authorize';
-  final String validateUrl = 'https://localhost:5558/validate';
+  // final String startUrl = 'https://localhost:5558/v1/auth/request';
+  // final String waitUrl = 'https://localhost:5558/v1/auth/request';
+  // final String authUrl = 'https://localhost:5558/v1/auth/authorize';
+  // final String validateUrl = 'https://localhost:5558/v1/auth/validate';
 
   // Future<http.Response> _getAuthRequest() async {
   //   return await http.get(Uri.parse(startUrl));
   // }
   Future<String> _getAuthRequest() async {
-    var response = await http.get(Uri.parse(startUrl));
-    if (response.statusCode != 200) {
-      throw 'Could not get auth request';
+    var url = AppConstant.authStartUrl.replaceAll('{token_source}', 'google');
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode >= 400 || response.statusCode < 100) {
+      throw 'error ${response.statusCode}';
     }
-    var decoded = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
-    var authRequestID = decoded['id'] as String;
+
+    var decoded =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+
+    int status = decoded['status'];
+    if (decoded['status'] != 200) {
+      throw 'error $status';
+    }
+
+    var authRequestID = decoded['document']['id'] as String;
     return authRequestID;
   }
 
   Future<Identity> _waitAuthorized(String authRequestID) async {
-    var response = await http.get(Uri.parse('$waitUrl/$authRequestID'));
+    var url = AppConstant.authWaitUrl.replaceAll('{token_source}', 'google');
+    var response = await http.get(Uri.parse('$url/$authRequestID'));
     if (response.statusCode != 200) {
       throw 'Could not authorize';
     }
@@ -47,7 +59,8 @@ class LoginRepo {
   // }
 
   Future<void> _authorize(String authRequestID) async {
-    bool res = await launchUrl(Uri.parse('$authUrl/$authRequestID'),
+    var url = AppConstant.authUrl.replaceAll('{token_source}', 'google');
+    bool res = await launchUrl(Uri.parse('$url/$authRequestID'),
         mode: LaunchMode.externalApplication);
 
     if (!res) {
@@ -64,7 +77,9 @@ class LoginRepo {
   }
 
   Future<Identity> validate(String tid, String idToken) async {
-    var response = await http.get(Uri.parse(validateUrl), headers: {
+    var url =
+        AppConstant.authValidateUrl.replaceAll('{token_source}', 'google');
+    var response = await http.get(Uri.parse(url), headers: {
       "tid": tid,
       "id_token": idToken,
     });

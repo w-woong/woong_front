@@ -10,11 +10,23 @@ class Product {
   double price;
   String description;
 
+  List<String> topImgUrlList;
+
   Product({required this.name, required this.price, required this.imgUrl})
       : id = '',
         createdAt = DateTime.now(),
         updatedAt = DateTime.now(),
-        description = '';
+        description = '',
+        topImgUrlList = [];
+  Product.empty()
+      : id = '',
+        createdAt = DateTime.now(),
+        updatedAt = DateTime.now(),
+        imgUrl = '',
+        name = '',
+        price = 0,
+        description = '',
+        topImgUrlList = [];
 
   Product.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -25,7 +37,8 @@ class Product {
         imgUrl = json['img_url'],
         name = json['name'],
         price = json['price'].toDouble(),
-        description = json['description'];
+        description = json['description'],
+        topImgUrlList = json['top_img_url_list'] ?? [];
 }
 
 class ProductRepo {

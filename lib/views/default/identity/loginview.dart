@@ -59,7 +59,9 @@ class _LoginBodyState extends State<_LoginBody> {
                       try {
                         await context.read<LoginVM>().authorize();
                         context.go('/home');
-                      } catch (e) {}
+                      } catch (e) {
+                        print(e);
+                      }
                     },
                     child: Text('Login with Google'),
                   ),
@@ -69,6 +71,17 @@ class _LoginBodyState extends State<_LoginBody> {
                       context.go('/home');
                     },
                     child: Text('Home'),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await context.read<LoginVM>().validate();
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                    child: const Text('Validate'),
                   ),
                   Text(context
                       .select((LoginVM value) => value.userIdentity.tid)),
