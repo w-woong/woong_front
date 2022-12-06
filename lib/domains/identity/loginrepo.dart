@@ -46,7 +46,9 @@ class LoginRepo {
     var idToken = decoded['id_token'] as String;
     var tid = decoded['tid'] as String;
     var expiry = decoded['expiry'] as int;
-    return Identity(tid: tid, idToken: idToken, expiry: expiry);
+    var tokenSource = decoded['token_source'] as String;
+    return Identity(
+        tid: tid, idToken: idToken, expiry: expiry, tokenSource: tokenSource);
   }
 
   // Future<void> _authorize(String authRequestID) async {
@@ -76,12 +78,14 @@ class LoginRepo {
     return await _waitAuthorized(authRequestID);
   }
 
-  Future<Identity> validate(String tid, String idToken) async {
-    var url =
-        AppConstant.authValidateUrl.replaceAll('{token_source}', 'google');
+  Future<Identity> validate(Identity identity) async {
+    var url = AppConstant.authValidateUrl
+        .replaceAll('{token_source}', identity.tokenSource);
+
     var response = await http.get(Uri.parse(url), headers: {
-      "tid": tid,
-      "id_token": idToken,
+      "tid": identity.tid,
+      "id_token": identity.idToken,
+      "token_source": identity.tokenSource,
     });
     if (response.statusCode != 200) {
       throw 'Could not get auth request';
@@ -93,6 +97,31 @@ class LoginRepo {
     var resIDToken = decoded['id_token'] as String;
     var resTID = decoded['tid'] as String;
     var resExpiry = decoded['expiry'] as int;
-    return Identity(tid: resTID, idToken: resIDToken, expiry: resExpiry);
+    var tokenSource = decoded['token_source'] as String;
+    return Identity(
+        tid: resTID,
+        idToken: resIDToken,
+        expiry: resExpiry,
+        tokenSource: tokenSource);
+  }
+
+  Future<void> findAccount(Identity identity) async {
+    var url = AppConstant.userAccountUrl;
+    var response = await http.get(Uri.parse(url), headers: {
+      "tid": identity.tid,
+      "id_token": identity.idToken,
+      "token_source": identity.tokenSource,
+    });
+    if (response.statusCode == 1000) {
+      // refresh
+      await validate(identity);
+    }
+    if (response.statusCode != 200) {
+      throw 'Could not get auth request';
+    }
+
+    var decoded =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+    print(decoded);
   }
 }

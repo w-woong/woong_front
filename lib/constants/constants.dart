@@ -12,4 +12,6 @@ class AppConstant {
       'https://localhost:5558/v1/auth/authorize/{token_source}';
   static const authValidateUrl =
       'https://localhost:5558/v1/auth/validate/{token_source}';
+
+  static const userAccountUrl = 'https://localhost:8080/v1/user/account';
 }

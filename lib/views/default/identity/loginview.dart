@@ -63,7 +63,7 @@ class _LoginBodyState extends State<_LoginBody> {
                         print(e);
                       }
                     },
-                    child: Text('Login with Google'),
+                    child: const Text('Login with Google'),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
@@ -72,19 +72,19 @@ class _LoginBodyState extends State<_LoginBody> {
                     },
                     child: Text('Home'),
                   ),
+                  Text(context
+                      .select((LoginVM value) => value.userIdentity.tid)),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        await context.read<LoginVM>().validate();
+                        await context.read<LoginVM>().findAccount();
                       } catch (e) {
                         print(e);
                       }
                     },
-                    child: const Text('Validate'),
+                    child: const Text('Account info'),
                   ),
-                  Text(context
-                      .select((LoginVM value) => value.userIdentity.tid)),
                 ],
               ),
             ),

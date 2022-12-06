@@ -2,15 +2,21 @@ class Identity {
   String tid;
   String idToken;
   int expiry;
+  String tokenSource;
 
-  Identity({required this.tid, required this.idToken, required this.expiry});
+  Identity(
+      {required this.tid,
+      required this.idToken,
+      required this.expiry,
+      required this.tokenSource});
   Identity.empty()
       : tid = '',
         idToken = '',
-        expiry = 0;
+        expiry = 0,
+        tokenSource = '';
 
   bool isEmpty() {
-    if (tid == '' || idToken == '' || expiry == 0) {
+    if (tid == '' || idToken == '') {
       return true;
     }
 
