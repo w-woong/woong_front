@@ -98,6 +98,7 @@ class _ProductThumbWithBottomState extends State<ProductThumbWithBottom> {
                       builder: (context) {
                         return ProductDetailView(
                           product: widget.product,
+                          isSheet: true,
                         );
                       },
                     );

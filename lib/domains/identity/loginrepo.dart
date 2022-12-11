@@ -112,9 +112,15 @@ class LoginRepo {
       "id_token": identity.idToken,
       "token_source": identity.tokenSource,
     });
-    if (response.statusCode == 1000) {
-      // refresh
-      await validate(identity);
+    if (response.statusCode == 401) {
+      var decoded =
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      var bodyStatus = decoded['status'] ?? response.statusCode;
+      if (bodyStatus == 1000) {
+        // refresh
+        // await validate(identity);
+        throw TokenExpiredException('token expired');
+      }
     }
     if (response.statusCode != 200) {
       throw 'Could not get auth request';

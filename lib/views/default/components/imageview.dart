@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ImageView extends StatelessWidget {
-  late bool isVertical;
-
-  ImageView({super.key}) : isVertical = false;
-
-  ImageView.vertical() {
-    isVertical = true;
-  }
+  final String url;
+  const ImageView({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +16,12 @@ class ImageView extends StatelessWidget {
         //     ? constraints.maxWidth
         //     : constraints.maxHeight;
         return ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           child: Image.network(
-            'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
+            url,
             fit: BoxFit.fill,
-            width: isVertical ? constraints.maxWidth : constraints.maxWidth / 2,
-            height:
-                isVertical ? constraints.maxWidth : constraints.maxWidth / 2,
+            // width: constraints.maxWidth,
+            height: constraints.maxWidth,
           ),
         );
       },

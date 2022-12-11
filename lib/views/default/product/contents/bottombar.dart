@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:woong_front/constants/routes.dart';
 import 'package:woong_front/views/default/components/textview.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
+  final bool isSheet;
+  const BottomBar({super.key, required this.isSheet});
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -23,7 +25,13 @@ class _BottomBarState extends State<BottomBar> {
               child: ElevatedButton(
                 child: Text('Cart'),
                 onPressed: () {
-                  Navigator.pop(context);
+                  if (widget.isSheet) {
+                    Navigator.pop(context);
+                    return;
+                  }
+                  print('a');
+                  context.go(AppRouteConstant.shopping);
+                  // return;
                 },
                 // style: TextButton.styleFrom(
                 //   backgroundColor: Theme.of(context).primaryColor,
@@ -32,16 +40,17 @@ class _BottomBarState extends State<BottomBar> {
               ),
             ),
           ),
-          SizedBox(
-            width: 5,
-          ),
+          const SizedBox(width: 5),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
               child: OutlinedButton(
-                child: Text('Purchase'),
+                child: const Text('Purchase'),
                 onPressed: () {
-                  Navigator.pop(context);
+                  if (widget.isSheet) {
+                    Navigator.pop(context);
+                    return;
+                  }
                 },
                 // style: TextButton.styleFrom(
                 //   backgroundColor: Theme.of(context).primaryColor,

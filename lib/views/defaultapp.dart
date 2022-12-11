@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:woong_front/constants/routes.dart';
 
 // models
 import 'package:woong_front/domains/appconfig/appconfig.dart';
@@ -25,6 +26,7 @@ import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
 import 'package:woong_front/views/default/shopping/shoppingview.dart';
+import 'package:woong_front/views/default/user/account_view.dart';
 import 'package:woong_front/views/defaulttheme.dart';
 
 class DefaultApp extends StatefulWidget {
@@ -36,17 +38,17 @@ class DefaultApp extends StatefulWidget {
 
 const tabs = [
   ScaffoldWithNavBarTabItem(
-    initialLocation: '/home',
+    initialLocation: AppRouteConstant.home,
     icon: Icon(Icons.home),
     label: 'Home',
   ),
   ScaffoldWithNavBarTabItem(
-    initialLocation: '/shopping',
+    initialLocation: AppRouteConstant.shopping,
     icon: Icon(Icons.shopping_cart),
     label: 'Shopping',
   ),
   ScaffoldWithNavBarTabItem(
-    initialLocation: '/login',
+    initialLocation: AppRouteConstant.user,
     icon: Icon(Icons.account_circle),
     label: 'Account',
   ),
@@ -101,7 +103,8 @@ class _DefaultAppState extends State<DefaultApp> {
     final GoRouter router = GoRouter(
       // initialLocation: '/test',
       // initialLocation: '/shopping',
-      initialLocation: '/home',
+      // initialLocation: AppRouteConstant.home,
+      initialLocation: AppRouteConstant.shopping,
       navigatorKey: rootNavigatorKey,
       routes: [
         ShellRoute(
@@ -114,10 +117,10 @@ class _DefaultAppState extends State<DefaultApp> {
           },
           routes: <GoRoute>[
             GoRoute(
-              path: '/home',
+              path: AppRouteConstant.home,
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                  child: HomeView(
+                  child: const HomeView(
                     bottomTabs: tabs,
                   ),
                   key: state.pageKey,
@@ -129,10 +132,11 @@ class _DefaultAppState extends State<DefaultApp> {
               // },
             ),
             GoRoute(
-              path: '/shopping',
+              path: AppRouteConstant.shopping,
               pageBuilder: (context, state) {
-                return NoTransitionPage(
+                return const NoTransitionPage(
                   child: ShoppingView(
+                    title: 'Shopping',
                     bottomTabs: tabs,
                   ),
                   // child: ProductSheetView(),
@@ -141,21 +145,32 @@ class _DefaultAppState extends State<DefaultApp> {
               routes: [
                 GoRoute(
                   path: 'product',
-                  builder: (context, state) => ProductDetailView(
-                    product: Product.empty(),
-                  ),
+                  builder: (context, state) {
+                    return ProductDetailView(
+                      product:
+                          context.select((ProductVM vm) => vm.selectedProduct),
+                      isSheet: false,
+                    );
+                  },
                 ),
               ],
             ),
             GoRoute(
-              path: '/login',
+              path: AppRouteConstant.user,
               pageBuilder: (context, state) {
-                return NoTransitionPage(
+                bool isAuthorized = context.read<LoginVM>().isAuthorized();
+                if (isAuthorized) {
+                  return const NoTransitionPage(
                     child: LoginView(
                       bottomTabs: tabs,
                     ),
-                    key: state.pageKey,
-                    restorationId: state.pageKey.value);
+                  );
+                }
+                return const NoTransitionPage(
+                  child: LoginView(
+                    bottomTabs: tabs,
+                  ),
+                );
               },
             ),
             GoRoute(
@@ -164,6 +179,7 @@ class _DefaultAppState extends State<DefaultApp> {
                 return NoTransitionPage(
                     child: ProductDetailView(
                       product: Product.empty(),
+                      isSheet: false,
                     ),
                     key: state.pageKey,
                     restorationId: state.pageKey.value);

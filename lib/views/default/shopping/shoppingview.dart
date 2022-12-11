@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:woong_front/domains/appconfig/appconfig_vm.dart';
 import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
@@ -8,8 +10,10 @@ import 'package:woong_front/views/default/components/imageview.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
 
 class ShoppingView extends StatefulWidget {
+  final String title;
   final List<ScaffoldWithNavBarTabItem> bottomTabs;
-  const ShoppingView({super.key, required this.bottomTabs});
+  const ShoppingView(
+      {super.key, required this.bottomTabs, required this.title});
 
   @override
   State<ShoppingView> createState() => _ShoppingViewState();
@@ -38,7 +42,9 @@ class _ShoppingViewState extends State<ShoppingView> {
           displacement: MediaQuery.of(context).padding.top,
           edgeOffset: MediaQuery.of(context).padding.top,
           onRefresh: _onRefresh,
-          child: _ShoppingBody(),
+          child: _ShoppingBody(
+            title: widget.title,
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavV2(
@@ -49,7 +55,8 @@ class _ShoppingViewState extends State<ShoppingView> {
 }
 
 class _ShoppingBody extends StatefulWidget {
-  const _ShoppingBody({super.key});
+  final String title;
+  const _ShoppingBody({super.key, required this.title});
 
   @override
   State<_ShoppingBody> createState() => _ShoppingBodyState();
@@ -58,14 +65,17 @@ class _ShoppingBody extends StatefulWidget {
 class _ShoppingBodyState extends State<_ShoppingBody> {
   @override
   Widget build(BuildContext context) {
-    int numCols = 2;
+    int numCols =
+        context.select((AppConfigVM vm) => vm.appConfig.shoppingNumColumns);
+    List<Product> products = context.select((ProductVM vm) => vm.products);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return CustomScrollView(
           slivers: [
-            DefaultAppBar(title: 'Shopping', showCart: true, showAccount: true),
+            DefaultAppBar(
+                title: widget.title, showCart: true, showAccount: true),
             SliverPadding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: constraints.maxWidth / numCols,
@@ -93,21 +103,22 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // context.go('/shopping/product');
+                              context.read<ProductVM>().selectProduct(index);
+                              context.go('/shopping/product');
 
-                              showCupertinoModalBottomSheet(
-                                context: context,
-                                expand: false,
-                                useRootNavigator: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) {
-                                  return ProductDetailView(
-                                    product: Product.empty(),
-                                  );
-                                },
-                              );
+                              // showCupertinoModalBottomSheet(
+                              //   context: context,
+                              //   expand: false,
+                              //   useRootNavigator: true,
+                              //   backgroundColor: Colors.transparent,
+                              //   builder: (context) {
+                              //     return ProductDetailView(
+                              //       product: products[index],
+                              //     );
+                              //   },
+                              // );
                             },
-                            child: ImageView.vertical(),
+                            child: ImageView(url: products[index].imgUrl),
                           ),
                           Container(
                             margin: EdgeInsets.all(2),
@@ -146,7 +157,7 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
                       ),
                     );
                   },
-                  childCount: 10,
+                  childCount: products.length,
                 ),
               ),
             ),

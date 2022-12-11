@@ -21,7 +21,12 @@ import 'package:provider/provider.dart';
 
 class ProductDetailView extends StatefulWidget {
   final Product product;
-  const ProductDetailView({super.key, required this.product});
+  final bool isSheet;
+  const ProductDetailView({
+    super.key,
+    required this.product,
+    required this.isSheet,
+  });
 
   @override
   State<ProductDetailView> createState() => _ProductDetailViewState();
@@ -32,35 +37,36 @@ class _ProductDetailViewState extends State<ProductDetailView> {
   void initState() {
     print('_ProductDetailViewState initState');
     super.initState();
-    // productDetailVM.fetch(widget.product.id);
+    context.read<ProductDetailVM>().fetch(widget.product.id);
   }
 
   @override
   Widget build(BuildContext context) {
     print('_ProductDetailViewState ${widget.product.id}');
-    context.read<ProductDetailVM>().fetch(widget.product.id);
+    // context.read<ProductDetailVM>().fetch(widget.product.id);
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          widget.product.name,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
+      appBar: widget.isSheet
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              title: Text(
+                widget.product.name,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            )
+          : null,
       body: _ProductBody(
-          product: context.select((ProductDetailVM vm) => vm.product)),
-      bottomNavigationBar: const BottomBar(),
+        product: context.select((ProductDetailVM vm) => vm.product),
+        isSheet: widget.isSheet,
+      ),
+      bottomNavigationBar: BottomBar(isSheet: widget.isSheet),
     );
   }
 }
 
 class _ProductBody extends StatefulWidget {
   final Product product;
-  // final imgList = [
-  //   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  //   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  // ];
-  const _ProductBody({super.key, required this.product});
+  final bool isSheet;
+  const _ProductBody({super.key, required this.product, required this.isSheet});
 
   @override
   State<_ProductBody> createState() => _ProductBodyState();
@@ -73,6 +79,10 @@ class _ProductBodyState extends State<_ProductBody> {
       shrinkWrap: true,
       controller: ModalScrollController.of(context),
       slivers: [
+        widget.isSheet
+            ? SliverToBoxAdapter(child: Container())
+            : DefaultAppBar(
+                title: widget.product.name, showCart: true, showAccount: false),
         const SliverToBoxAdapter(child: DividerView()),
         SliverToBoxAdapter(
           child: ImageCarouselSlider(

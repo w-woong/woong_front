@@ -91,12 +91,21 @@ class ProductRepo {
 
 class ProductVM extends ChangeNotifier {
   ProductRepo repo;
-  List<Product> products;
 
-  ProductVM({required this.repo}) : products = [];
+  List<Product> products;
+  Product selectedProduct;
+
+  ProductVM({required this.repo})
+      : products = [],
+        selectedProduct = Product.empty();
 
   void fetch() async {
     products = await repo.readProducts();
+    notifyListeners();
+  }
+
+  void selectProduct(int index) {
+    selectedProduct = products[index];
     notifyListeners();
   }
 }

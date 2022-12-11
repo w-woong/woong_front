@@ -49,6 +49,8 @@ class LoginVM extends ChangeNotifier {
         await repo.findAccount(userIdentity);
         return;
       }
+    } on TokenExpiredException {
+      await validate();
     } catch (e) {
       rethrow;
     } finally {
