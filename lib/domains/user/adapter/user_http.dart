@@ -1,26 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:woong_front/domains/appconfig/appconfig.dart';
-import 'package:http/http.dart' as http;
+import 'package:woong_front/constants/constants.dart';
+import 'package:woong_front/domains/user/user.dart';
+import 'package:woong_front/domains/user/user_port.dart';
 
-abstract class AppConfigRepo {
-  Future<AppConfig> findAppConfig(String id);
-}
-
-class AppConfigHttp implements AppConfigRepo {
+class UserHttp implements UserService {
   Dio client;
-  // String baseUrl;
-  // String bearerToken;
-  // late int defaultTimeout;
-
-  AppConfigHttp(this.client);
+  UserHttp(this.client);
 
   @override
-  Future<AppConfig> findAppConfig(String id) async {
+  Future<User> findUserAccount() async {
     try {
       var response = await client.get(
-        '/v1/woong/appconfig/$id',
+        AppConstant.userAccountUrl,
         options: Options(
           headers: {
             Headers.contentTypeHeader: 'application/json',
@@ -33,8 +27,11 @@ class AppConfigHttp implements AppConfigRepo {
       if (status != 200) {
         throw '$message(status:$status)';
       }
-
-      return AppConfig.fromJson(decoded['document']);
+      print('UserHttp: $decoded["document"]');
+      if (decoded["document"] == null) {
+        return User.empty();
+      }
+      return User.fromJson(decoded['document']);
     } on DioError catch (e) {
       if (e.response != null) {
         var decoded = jsonDecode(e.response?.data) as Map<String, dynamic>;

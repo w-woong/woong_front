@@ -72,8 +72,7 @@ class _LoginBodyState extends State<_LoginBody> {
                     },
                     child: Text('Home'),
                   ),
-                  Text(context
-                      .select((LoginVM value) => value.userIdentity.tid)),
+                  Text('tid'),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () async {
@@ -84,6 +83,17 @@ class _LoginBodyState extends State<_LoginBody> {
                       }
                     },
                     child: const Text('Account info'),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        await context.read<LoginVM>().logout();
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
+                    child: const Text('Logout'),
                   ),
                 ],
               ),

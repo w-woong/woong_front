@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/domains/identity/loginrepo.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 
@@ -116,7 +115,8 @@ class MainPromotionView extends StatelessWidget {
                 ElevatedButton(
                   child: Text('buy'),
                   onPressed: () {
-                    if (!context.read<LoginVM>().isAuthorized()) {
+                    if (!context
+                        .select((LoginVM vm) => vm.isAuthorized ?? false)) {
                       print('sdf');
                     }
                   },

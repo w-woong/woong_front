@@ -10,7 +10,7 @@ class AppConfigVM extends ChangeNotifier {
 
   Future<void> fetch(String id) async {
     try {
-      var appConfig = await repo.findAppConfigNoTx(id);
+      var appConfig = await repo.findAppConfig(id);
       if (appConfig.isEmpty()) {
         this.appConfig = AppConfig.empty();
       } else {

@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:woong_front/commons/interceptors/auth_interceptor.dart';
 import 'package:woong_front/constants/routes.dart';
 
 // models
@@ -10,8 +13,11 @@ import 'package:woong_front/domains/appconfig/appconfig_vm.dart';
 import 'package:woong_front/domains/home/home.dart';
 import 'package:woong_front/domains/home/home_repo.dart';
 import 'package:woong_front/domains/home/home_vm.dart';
-import 'package:woong_front/domains/identity/loginrepo.dart';
+import 'package:woong_front/domains/identity/adapter/auth_http.dart';
+import 'package:woong_front/domains/identity/adapter/token_refresh_http.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
+import 'package:woong_front/domains/identity/token_port.dart';
+import 'package:woong_front/domains/identity/token_repo.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/notice/noticerepo.dart';
 import 'package:woong_front/domains/product/product.dart';
@@ -19,6 +25,8 @@ import 'package:woong_front/domains/product/product_detail_repo.dart';
 import 'package:woong_front/domains/product/product_detail_vm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
+import 'package:woong_front/domains/user/adapter/user_http.dart';
+import 'package:woong_front/domains/user/user_port.dart';
 
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/constants/constants.dart';
@@ -55,7 +63,18 @@ const tabs = [
 ];
 
 class _DefaultAppState extends State<DefaultApp> {
-  // late AppConfig appConfig;
+  late FlutterSecureStorage secureStorage;
+
+  late Dio authClient;
+  late Dio woongClient;
+  late Dio userClient;
+  late Dio refreshOnlyClient;
+
+  late AuthService googleAuthService;
+  late TokenRepo tokenRepo;
+  late TokenRefreshService tokenRefreshService;
+  late UserService userService;
+
   late AppConfigVM appConfigVM;
 
   late HomeVM homeVM;
@@ -68,12 +87,63 @@ class _DefaultAppState extends State<DefaultApp> {
 
   late LoginVM loginVM;
 
+  AndroidOptions _getAndroidOptions() =>
+      const AndroidOptions(encryptedSharedPreferences: true);
+  IOSOptions iOptions =
+      const IOSOptions(accessibility: KeychainAccessibility.first_unlock);
   @override
   void initState() {
     super.initState();
 
-    appConfigVM = AppConfigVM(
-        repo: AppConfigHttp(AppConstant.woongUrl, AppConstant.bearerToken));
+    // storage
+    secureStorage = FlutterSecureStorage(
+        aOptions: _getAndroidOptions(), iOptions: iOptions);
+    tokenRepo = TokenSecureStorage(secureStorage);
+
+    // client
+    refreshOnlyClient = Dio(
+      BaseOptions(
+        baseUrl: AppConstant.authBaseUrl,
+        connectTimeout: AppConstant.defaultConnectTimeout,
+        receiveTimeout: AppConstant.defaultReceiveTimeout,
+      ),
+    );
+    // authClient.interceptors.add(RefreshIDTokenInterceptor(tokenRepo));
+    tokenRefreshService = TokenRefreshHttp(refreshOnlyClient);
+
+    authClient = Dio(
+      BaseOptions(
+        baseUrl: AppConstant.authBaseUrl,
+        connectTimeout: AppConstant.defaultConnectTimeout,
+        receiveTimeout: AppConstant.defaultReceiveTimeout,
+      ),
+    );
+    googleAuthService = AuthHttp(authClient, 'google');
+
+    // client
+    var options = BaseOptions(
+      baseUrl: AppConstant.woongUrl,
+      connectTimeout: AppConstant.defaultConnectTimeout,
+      receiveTimeout: AppConstant.defaultReceiveTimeout,
+    );
+    woongClient = Dio(options);
+    woongClient.interceptors
+        .add(AuthBearerInterceptor(AppConstant.bearerToken));
+
+    userClient = Dio(
+      BaseOptions(
+        baseUrl: AppConstant.userBaseUrl,
+        connectTimeout: AppConstant.defaultConnectTimeout,
+        receiveTimeout: AppConstant.defaultReceiveTimeout,
+      ),
+    );
+    userClient.interceptors
+        .add(AuthIDTokenInterceptor(tokenRepo, tokenRefreshService));
+
+    // service
+    userService = UserHttp(userClient);
+
+    appConfigVM = AppConfigVM(repo: AppConfigHttp(woongClient));
     appConfigVM.fetch(AppConstant.appID);
 
     homeVM = HomeVM(
@@ -92,7 +162,11 @@ class _DefaultAppState extends State<DefaultApp> {
     productDetailVM =
         ProductDetailVM(repo: ProductDetailDummy(), product: Product.empty());
 
-    loginVM = LoginVM(repo: LoginRepo());
+    loginVM = LoginVM(
+        googleAuthService: googleAuthService,
+        tokenRepo: tokenRepo,
+        userService: userService);
+    loginVM.checkAuthorized();
   }
 
   @override
@@ -158,14 +232,14 @@ class _DefaultAppState extends State<DefaultApp> {
             GoRoute(
               path: AppRouteConstant.user,
               pageBuilder: (context, state) {
-                bool isAuthorized = context.read<LoginVM>().isAuthorized();
-                if (isAuthorized) {
-                  return const NoTransitionPage(
-                    child: LoginView(
-                      bottomTabs: tabs,
-                    ),
-                  );
-                }
+                // bool isAuthorized = context.read<LoginVM>().isAuthorized();
+                // if (isAuthorized) {
+                //   return const NoTransitionPage(
+                //     child: LoginView(
+                //       bottomTabs: tabs,
+                //     ),
+                //   );
+                // }
                 return const NoTransitionPage(
                   child: LoginView(
                     bottomTabs: tabs,

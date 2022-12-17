@@ -33,7 +33,7 @@ class _UserAccountBody extends StatefulWidget {
 class _UserAccountBodyState extends State<_UserAccountBody> {
   @override
   Widget build(BuildContext context) {
-    var userIdentity = context.select((LoginVM vm) => vm.userIdentity);
+    // var userIdentity = context.select((LoginVM vm) => vm.userIdentity);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return CustomScrollView(
@@ -42,7 +42,7 @@ class _UserAccountBodyState extends State<_UserAccountBody> {
             const SliverToBoxAdapter(child: DividerView()),
             SliverToBoxAdapter(
               child: Container(
-                child: Text(userIdentity.idToken),
+                child: Text('a'),
               ),
             ),
           ],
