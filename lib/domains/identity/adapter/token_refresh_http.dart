@@ -12,8 +12,10 @@ class TokenRefreshHttp implements TokenRefreshService {
   @override
   Future<Token> refresh(Token token) async {
     try {
+      var path = AppConstant.authRefreshPath;
+      var tokenSource = token.tokenSource;
       var response = await client.get(
-        '$AppConstant.authRefreshPath/$token.tokenSource',
+        '$path/$tokenSource',
         options: Options(
           headers: {
             Headers.contentTypeHeader: 'application/json',

@@ -28,3 +28,22 @@ class ImageView extends StatelessWidget {
     );
   }
 }
+
+class SquareImageView extends StatelessWidget {
+  final String url;
+  final double size;
+  const SquareImageView({super.key, required this.url, required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+      child: Image.network(
+        url,
+        fit: BoxFit.fill,
+        width: size,
+        height: size,
+      ),
+    );
+  }
+}

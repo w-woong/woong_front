@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:woong_front/commons/interceptors/auth_interceptor.dart';
+import 'package:woong_front/commons/interceptors/validate_response_interceptor.dart';
 import 'package:woong_front/constants/routes.dart';
 
 // models
@@ -20,6 +21,9 @@ import 'package:woong_front/domains/identity/token_port.dart';
 import 'package:woong_front/domains/identity/token_repo.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/notice/noticerepo.dart';
+import 'package:woong_front/domains/order/adapter/CartHttp.dart';
+import 'package:woong_front/domains/order/port/cart_port.dart';
+import 'package:woong_front/domains/order/viewmodel/cart_vm.dart';
 import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/product/product_detail_repo.dart';
 import 'package:woong_front/domains/product/product_detail_vm.dart';
@@ -27,6 +31,7 @@ import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/domains/user/adapter/user_http.dart';
 import 'package:woong_front/domains/user/user_port.dart';
+import 'package:woong_front/views/default/cart/cart_view.dart';
 
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/constants/constants.dart';
@@ -34,8 +39,10 @@ import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
 import 'package:woong_front/views/default/shopping/shoppingview.dart';
+import 'package:woong_front/views/default/testviews/test_view.dart';
 import 'package:woong_front/views/default/user/account_view.dart';
 import 'package:woong_front/views/defaulttheme.dart';
+import 'package:woong_front/views/defaultapp_navbartabs.dart';
 
 class DefaultApp extends StatefulWidget {
   const DefaultApp({super.key});
@@ -44,36 +51,20 @@ class DefaultApp extends StatefulWidget {
   State<DefaultApp> createState() => _DefaultAppState();
 }
 
-const tabs = [
-  ScaffoldWithNavBarTabItem(
-    initialLocation: AppRouteConstant.home,
-    icon: Icon(Icons.home),
-    label: 'Home',
-  ),
-  ScaffoldWithNavBarTabItem(
-    initialLocation: AppRouteConstant.shopping,
-    icon: Icon(Icons.shopping_cart),
-    label: 'Shopping',
-  ),
-  ScaffoldWithNavBarTabItem(
-    initialLocation: AppRouteConstant.user,
-    icon: Icon(Icons.account_circle),
-    label: 'Account',
-  ),
-];
-
 class _DefaultAppState extends State<DefaultApp> {
   late FlutterSecureStorage secureStorage;
 
+  late Dio refreshOnlyClient;
   late Dio authClient;
   late Dio woongClient;
   late Dio userClient;
-  late Dio refreshOnlyClient;
+  late Dio orderClient;
 
+  late TokenRefreshService tokenRefreshService;
   late AuthService googleAuthService;
   late TokenRepo tokenRepo;
-  late TokenRefreshService tokenRefreshService;
   late UserService userService;
+  late CartService cartService;
 
   late AppConfigVM appConfigVM;
 
@@ -86,6 +77,7 @@ class _DefaultAppState extends State<DefaultApp> {
   late ProductDetailVM productDetailVM;
 
   late LoginVM loginVM;
+  late CartVM cartVM;
 
   AndroidOptions _getAndroidOptions() =>
       const AndroidOptions(encryptedSharedPreferences: true);
@@ -140,8 +132,18 @@ class _DefaultAppState extends State<DefaultApp> {
     userClient.interceptors
         .add(AuthIDTokenInterceptor(tokenRepo, tokenRefreshService));
 
+    orderClient = Dio(BaseOptions(
+      baseUrl: AppConstant.orderBaseUrl,
+      connectTimeout: AppConstant.defaultConnectTimeout,
+      receiveTimeout: AppConstant.defaultReceiveTimeout,
+    ));
+    orderClient.interceptors
+        .add(AuthIDTokenInterceptor(tokenRepo, tokenRefreshService));
+    orderClient.interceptors.add(ValidateResponseInterceptor());
+
     // service
     userService = UserHttp(userClient);
+    cartService = CartHttp(orderClient);
 
     appConfigVM = AppConfigVM(repo: AppConfigHttp(woongClient));
     appConfigVM.fetch(AppConstant.appID);
@@ -167,6 +169,8 @@ class _DefaultAppState extends State<DefaultApp> {
         tokenRepo: tokenRepo,
         userService: userService);
     loginVM.checkAuthorized();
+
+    cartVM = CartVM(cartService);
   }
 
   @override
@@ -178,7 +182,8 @@ class _DefaultAppState extends State<DefaultApp> {
       // initialLocation: '/test',
       // initialLocation: '/shopping',
       // initialLocation: AppRouteConstant.home,
-      initialLocation: AppRouteConstant.shopping,
+      // initialLocation: AppRouteConstant.shopping,
+      initialLocation: AppRouteConstant.cart,
       navigatorKey: rootNavigatorKey,
       routes: [
         ShellRoute(
@@ -195,7 +200,7 @@ class _DefaultAppState extends State<DefaultApp> {
               pageBuilder: (context, state) {
                 return NoTransitionPage(
                   child: const HomeView(
-                    bottomTabs: tabs,
+                    bottomTabs: DefaultAppNavBar.tabs,
                   ),
                   key: state.pageKey,
                   restorationId: state.pageKey.value,
@@ -211,7 +216,7 @@ class _DefaultAppState extends State<DefaultApp> {
                 return const NoTransitionPage(
                   child: ShoppingView(
                     title: 'Shopping',
-                    bottomTabs: tabs,
+                    bottomTabs: DefaultAppNavBar.tabs,
                   ),
                   // child: ProductSheetView(),
                 );
@@ -242,7 +247,18 @@ class _DefaultAppState extends State<DefaultApp> {
                 // }
                 return const NoTransitionPage(
                   child: LoginView(
-                    bottomTabs: tabs,
+                    bottomTabs: DefaultAppNavBar.tabs,
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRouteConstant.cart,
+              pageBuilder: (context, state) {
+                return const NoTransitionPage(
+                  child: CartView(
+                    bottomTabs: DefaultAppNavBar.tabs,
+                    title: 'Cart',
                   ),
                 );
               },
@@ -250,13 +266,11 @@ class _DefaultAppState extends State<DefaultApp> {
             GoRoute(
               path: '/test',
               pageBuilder: (context, state) {
-                return NoTransitionPage(
-                    child: ProductDetailView(
-                      product: Product.empty(),
-                      isSheet: false,
-                    ),
-                    key: state.pageKey,
-                    restorationId: state.pageKey.value);
+                return const NoTransitionPage(
+                  child: MyTestView(
+                    bottomTabs: DefaultAppNavBar.tabs,
+                  ),
+                );
               },
             ),
           ],
@@ -275,6 +289,7 @@ class _DefaultAppState extends State<DefaultApp> {
         ChangeNotifierProvider(create: (context) => productVM),
         ChangeNotifierProvider(create: (context) => productDetailVM),
         ChangeNotifierProvider(create: (context) => loginVM),
+        ChangeNotifierProvider(create: (context) => cartVM),
       ],
       child: DefaultMaterialApp(router: router),
     );

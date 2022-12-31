@@ -31,10 +31,15 @@ class _BottomNavV2State extends State<BottomNavV2> {
     return BottomNavigationBar(
       items: widget.tabs,
       currentIndex: _currentIndex,
-      // selectedItemColor: Colors.amber[800],
       onTap: (value) {
         _onItemTapped(context, value);
       },
+      // selectedItemColor: Colors.amber[800],
+      // unselectedItemColor: Colors.grey,
+      // showUnselectedLabels: true,
+      // showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      // selectedIconTheme: Theme.of(context).bottomAppBarTheme.,
     );
   }
 }

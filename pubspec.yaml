@@ -47,6 +47,7 @@ dependencies:
   modal_bottom_sheet: ^2.1.2
   dio: ^4.0.6
   flutter_secure_storage: ^7.0.1
+  json_annotation: ^4.7.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  
+  build_runner: ^2.3.3
+  json_serializable: ^6.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
