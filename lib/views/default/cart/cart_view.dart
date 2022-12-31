@@ -65,30 +65,34 @@ class _CartBodyState extends State<_CartBody> {
             //     childCount: cartProducts.length,
             //   ),
             // ),
-            SliverPadding(
-              padding: const EdgeInsets.all(10),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: constraints.maxWidth / numCols,
-                  mainAxisExtent: 300,
-                  mainAxisSpacing: 10.0,
-                  // crossAxisSpacing: 10.0,
-                  // childAspectRatio: 0.8,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      child: CartProductView(
-                        width: constraints.maxWidth - 20,
-                        cartProduct: cartProducts[index],
+            cartProducts.isEmpty
+                ? SliverToBoxAdapter(
+                    child: Container(),
+                  )
+                : SliverPadding(
+                    padding: const EdgeInsets.all(10),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: constraints.maxWidth / numCols,
+                        mainAxisExtent: 300,
+                        mainAxisSpacing: 10.0,
+                        // crossAxisSpacing: 10.0,
+                        // childAspectRatio: 0.8,
                       ),
-                    );
-                  },
-                  childCount: cartProducts.length,
-                ),
-              ),
-            ),
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return Dismissible(
+                            key: UniqueKey(),
+                            child: CartProductView(
+                              width: constraints.maxWidth - 20,
+                              cartProduct: cartProducts[index],
+                            ),
+                          );
+                        },
+                        childCount: cartProducts.length,
+                      ),
+                    ),
+                  ),
           ],
         );
       },
