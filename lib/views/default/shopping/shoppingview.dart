@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -20,31 +21,15 @@ class ShoppingView extends StatefulWidget {
 }
 
 class _ShoppingViewState extends State<ShoppingView> {
-  double indicatorHeight = 0.0;
-  var refreshKey = GlobalKey<RefreshIndicatorState>();
-  Future<void> _onRefresh() async {
-    setState(() {
-      indicatorHeight = 120.0;
-    });
-    await Future.delayed(Duration(seconds: 2));
-
-    setState(() {
-      indicatorHeight = 0.0;
-    });
-    return Future<void>.value();
-  }
+  // double indicatorHeight = 0.0;
+  // var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: RefreshIndicator(
-          displacement: MediaQuery.of(context).padding.top,
-          edgeOffset: MediaQuery.of(context).padding.top,
-          onRefresh: _onRefresh,
-          child: _ShoppingBody(
-            title: widget.title,
-          ),
+        child: _ShoppingBody(
+          title: widget.title,
         ),
       ),
       bottomNavigationBar: BottomNavV2(
@@ -74,6 +59,11 @@ class _ShoppingBodyState extends State<_ShoppingBody> {
           slivers: [
             DefaultAppBar(
                 title: widget.title, showCart: true, showAccount: true),
+            CupertinoSliverRefreshControl(
+              onRefresh: () async {
+                await Future<void>.delayed(const Duration(seconds: 2));
+              },
+            ),
             SliverPadding(
               padding: const EdgeInsets.all(10),
               sliver: SliverGrid(
