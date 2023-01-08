@@ -26,13 +26,9 @@ class CartHttp implements CartService {
       }
 
       return Cart.fromJson(decoded['document']);
-    } on DioError catch (e) {
-      print(e.message);
-      rethrow;
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    } finally {}
+    } finally {
+      print('finally');
+    }
   }
 
   @override

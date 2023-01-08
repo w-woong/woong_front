@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:woong_front/commons/exceptions/auth_exceptions.dart';
 import 'package:woong_front/domains/order/model/cart.dart';
 import 'package:woong_front/domains/order/model/cart_product.dart';
 import 'package:woong_front/domains/order/port/cart_port.dart';
@@ -15,6 +16,9 @@ class CartVM extends ChangeNotifier implements FetchCartVM, AddCartVM {
     try {
       myCart = await svc.findCart();
     } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw UnauthorizedException(e.message);
+      }
       throw e.message;
     } catch (e) {
       rethrow;

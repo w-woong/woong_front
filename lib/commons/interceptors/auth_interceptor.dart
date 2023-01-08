@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:woong_front/commons/exceptions/auth_exceptions.dart';
 import 'package:woong_front/domains/identity/token.dart';
 import 'package:woong_front/domains/identity/token_port.dart';
 import 'package:woong_front/domains/identity/token_repo.dart';
@@ -48,8 +49,10 @@ class AuthIDTokenInterceptor extends QueuedInterceptor {
     var decoded = jsonDecode(body) as Map<String, dynamic>;
     var status = decoded['status'] ?? 404;
     if (status != 1000) {
-      print('return not 1000');
+      // print('return not 1000');
       return super.onError(err, handler);
+
+      // throw UnauthorizedException(err.message);
     }
 
     try {
