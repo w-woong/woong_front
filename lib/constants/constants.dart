@@ -10,6 +10,7 @@ class AppConstant {
   static const authBaseUrl = 'https://192.168.0.92:5558';
   static const userBaseUrl = 'https://192.168.0.92:8080';
   static const orderBaseUrl = 'https://192.168.0.92:49003';
+  static const partnerBaseUrl = 'http://192.168.0.92:49004';
 
   static const authRefreshPath = '/v1/auth/validate';
   static const authPath = '/v1/auth/authorize';
@@ -20,6 +21,9 @@ class AppConstant {
 
   static const orderFindOrCreateCartPath = '/v1/order/cart/_find-or-create';
   static const orderAddCartProductPath = '/v1/order/cart/product';
+
+  static const partnerFindAddressPath = '/v1/partner/address';
+
   // static const authStartUrl =
   //     'https://localhost:5558/v1/auth/request/{token_source}';
   // static const authWaitUrl =

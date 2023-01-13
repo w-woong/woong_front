@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // for usePathUrlStrategy();
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -17,9 +19,15 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
   usePathUrlStrategy();
   HttpOverrides.global = MyHttpOverrides();
+
+  // WidgetsFlutterBinding.ensureInitialized();
+  // ByteData data = await PlatformAssetBundle().load('assets/ca/server.crt');
+  // SecurityContext.defaultContext
+  //     .setTrustedCertificatesBytes(data.buffer.asUint8List());
+
   runApp(const MyApp());
 }
 

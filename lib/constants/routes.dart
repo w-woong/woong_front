@@ -3,4 +3,5 @@ class AppRouteConstant {
   static const shopping = '/shopping';
   static const user = '/user';
   static const cart = '/cart';
+  static const payment = '/payment';
 }

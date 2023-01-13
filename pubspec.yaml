@@ -48,6 +48,7 @@ dependencies:
   dio: ^4.0.6
   flutter_secure_storage: ^7.0.1
   json_annotation: ^4.7.0
+  webview_flutter: ^4.0.1
 
 dev_dependencies:
   flutter_test:
@@ -82,7 +83,8 @@ flutter:
     - assets/images/icons/1x/
     - assets/images/icons/2x/
     - assets/images/app/
-
+    - assets/ca/
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

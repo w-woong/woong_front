@@ -37,6 +37,7 @@ import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/constants/constants.dart';
 import 'package:woong_front/views/default/home/homeview.dart';
 import 'package:woong_front/views/default/identity/loginview.dart';
+import 'package:woong_front/views/default/payment/payment_view.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
 import 'package:woong_front/views/default/shopping/shoppingview.dart';
 import 'package:woong_front/views/default/testviews/test_view.dart';
@@ -183,7 +184,8 @@ class _DefaultAppState extends State<DefaultApp> {
       // initialLocation: '/shopping',
       // initialLocation: AppRouteConstant.home,
       // initialLocation: AppRouteConstant.shopping,
-      initialLocation: AppRouteConstant.cart,
+      // initialLocation: AppRouteConstant.cart,
+      initialLocation: AppRouteConstant.payment,
       navigatorKey: rootNavigatorKey,
       routes: [
         ShellRoute(
@@ -259,6 +261,28 @@ class _DefaultAppState extends State<DefaultApp> {
                   child: CartView(
                     bottomTabs: DefaultAppNavBar.tabs,
                     title: 'Cart',
+                  ),
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: 'payment',
+                  builder: (context, state) {
+                    return PaymentView(
+                      bottomTabs: DefaultAppNavBar.tabs,
+                      title: 'Payment',
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppRouteConstant.payment,
+              pageBuilder: (context, state) {
+                return const NoTransitionPage(
+                  child: PaymentView(
+                    bottomTabs: DefaultAppNavBar.tabs,
+                    title: 'Payment',
                   ),
                 );
               },

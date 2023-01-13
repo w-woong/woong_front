@@ -55,3 +55,11 @@ package:woong_front/…/model/cart.g.dart:15
 #9      ListIterable.toList (dart:_internal/iterable.dart:213:44)
 #10     _$CartFromJson (package:woong_front/domains/order<…>
 ```
+
+## CocoaPods not installed or not in valid state.
+```
+brew install cocoapods
+
+Android studio 
+File > Invalidate Caches / Restart
+```
