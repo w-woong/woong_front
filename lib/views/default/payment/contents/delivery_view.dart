@@ -42,7 +42,8 @@ class _DeliveryViewState extends State<DeliveryView> {
     //     Uri.parse(
     //         AppConstant.partnerBaseUrl + AppConstant.partnerFindAddressPath),
     //     headers: {'Authorization': 'Bearer ${AppConstant.bearerToken}'})
-    ..loadRequest(Uri.parse('http://192.168.0.92:49004/v1/partner/address'));
+    ..loadRequest(
+        Uri.parse('${AppConstant.partnerBaseUrl}/v1/partner/address'));
   @override
   Widget build(BuildContext context) {
     return SizedBox(
