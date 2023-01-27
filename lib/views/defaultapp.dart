@@ -182,10 +182,10 @@ class _DefaultAppState extends State<DefaultApp> {
     final GoRouter router = GoRouter(
       // initialLocation: '/test',
       // initialLocation: '/shopping',
-      // initialLocation: AppRouteConstant.home,
+      initialLocation: AppRouteConstant.home,
       // initialLocation: AppRouteConstant.shopping,
       // initialLocation: AppRouteConstant.cart,
-      initialLocation: AppRouteConstant.payment,
+      // initialLocation: AppRouteConstant.payment,
       navigatorKey: rootNavigatorKey,
       routes: [
         ShellRoute(

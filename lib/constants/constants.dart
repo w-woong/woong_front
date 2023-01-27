@@ -6,11 +6,11 @@ class AppConstant {
       'ab2316584873095f017f6dfa7a9415794f563fcc473eb3fe65b9167e37fd5a4b';
   static const appID = 'b69aa108-f12e-4fa0-bf4f-ba002c11a670';
 
-  static const woongUrl = 'http://localhost:49001';
-  static const authBaseUrl = 'https://localhost:5558';
-  static const userBaseUrl = 'https://localhost:8080';
-  static const orderBaseUrl = 'https://localhost:49003';
-  static const partnerBaseUrl = 'http://localhost:49004';
+  static const woongUrl = 'https://192.168.0.12:49001';
+  static const authBaseUrl = 'https://192.168.0.12:5558';
+  static const userBaseUrl = 'https://192.168.0.12:8080';
+  static const orderBaseUrl = 'https://192.168.0.12:49003';
+  static const partnerBaseUrl = 'http://192.168.0.12:49004';
 
   static const authRefreshPath = '/v1/auth/validate';
   static const authPath = '/v1/auth/authorize';

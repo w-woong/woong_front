@@ -50,10 +50,16 @@ class BottomInfoView extends StatelessWidget {
           const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Copyright © COMPANY_NAME 2017-2022 All Rights Reserved.',
-                style: Theme.of(context).textTheme.bodySmall,
+              Expanded(
+                child: Text(
+                  'Copyright © COMPANY_NAME 2017-2023 All Rights Reserved.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  maxLines: 2,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
