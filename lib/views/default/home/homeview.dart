@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woong_front/domains/home/model/home.dart';
 import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
-import 'package:woong_front/domains/notice/noticevm.dart';
+import 'package:woong_front/domains/notice/viewmodel/noticevm.dart';
 import 'package:woong_front/domains/product/model/group.dart';
 import 'package:woong_front/domains/promotion/model/promotion.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
 import 'package:woong_front/domains/notice/model/notice.dart';
-import 'package:woong_front/domains/notice/noticevm.dart';
+import 'package:woong_front/domains/notice/viewmodel/noticevm.dart';
 
 class ShortNoticeSliderView extends StatefulWidget {
   const ShortNoticeSliderView({super.key});
