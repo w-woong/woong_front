@@ -1,8 +1,9 @@
 import 'package:woong_front/commons/strings.dart';
 import 'package:woong_front/domains/notice/model/notice.dart';
+import 'package:woong_front/domains/notice/port/notice_port.dart';
 
-class ShortNoticeRepo {
-  ShortNoticeRepo();
+class ShortNoticeDummy implements ShortNoticeService {
+  ShortNoticeDummy();
 
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -13,6 +14,7 @@ class ShortNoticeRepo {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
+  @override
   Future<List<ShortNotice>> getNoticeList() async {
     List<ShortNotice> list =
         await Future.delayed(const Duration(milliseconds: 500), () {

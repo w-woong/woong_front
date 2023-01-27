@@ -18,8 +18,8 @@ import 'package:woong_front/domains/identity/adapter/token_refresh_http.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
 import 'package:woong_front/domains/identity/token_port.dart';
 import 'package:woong_front/domains/identity/token_repo.dart';
-import 'package:woong_front/domains/notice/noticevm.dart';
-import 'package:woong_front/domains/notice/noticerepo.dart';
+import 'package:woong_front/domains/notice/viewmodel/noticevm.dart';
+import 'package:woong_front/domains/notice/adapter/notice_dummy.dart';
 import 'package:woong_front/domains/order/adapter/CartHttp.dart';
 import 'package:woong_front/domains/order/port/cart_port.dart';
 import 'package:woong_front/domains/order/viewmodel/cart_vm.dart';
@@ -71,7 +71,7 @@ class _DefaultAppState extends State<DefaultApp> {
   late AppConfigVM appConfigVM;
 
   late HomeVM homeVM;
-  late ShortNoticeRepo shortNoticeRepo;
+  late ShortNoticeDummy shortNoticeRepo;
   late ShortNoticeVM shortNoticeVM;
   late PromotionVM promotionVM;
   late RecommendVM recommendVM;
@@ -152,8 +152,8 @@ class _DefaultAppState extends State<DefaultApp> {
     appConfigVM = AppConfigVM(svc: AppConfigHttp(woongClient));
     homeVM = HomeVM(homeSvc: homeService);
 
-    shortNoticeRepo = ShortNoticeRepo();
-    shortNoticeVM = ShortNoticeVM(repo: shortNoticeRepo);
+    shortNoticeRepo = ShortNoticeDummy();
+    shortNoticeVM = ShortNoticeVM(svc: shortNoticeRepo);
     promotionVM = PromotionVM(repo: PromotionRepo());
     recommendVM = RecommendVM(repo: RecommendRepo());
     productVM = ProductVM(repo: ProductRepo());
