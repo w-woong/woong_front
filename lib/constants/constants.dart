@@ -12,6 +12,9 @@ class AppConstant {
   static const orderBaseUrl = 'https://192.168.0.12:49003';
   static const partnerBaseUrl = 'http://192.168.0.12:49004';
 
+  static const woongAppconfigPath = '/v1/woong/appconfig';
+  static const woongHomeAppconfigPath = '/v1/woong/home/appconfig';
+
   static const authRefreshPath = '/v1/auth/validate';
   static const authPath = '/v1/auth/authorize';
   static const authRetrievePath = '/v1/auth/request';

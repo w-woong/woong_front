@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/domains/appconfig/appconfig.dart';
-import 'package:woong_front/domains/home/home_vm.dart';
+import 'package:woong_front/domains/appconfig/model/appconfig.dart';
+import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
 
 class DefaultAppBar extends StatefulWidget {
   final String title;

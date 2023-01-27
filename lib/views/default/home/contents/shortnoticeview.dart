@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:woong_front/domains/home/home_vm.dart';
+import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
 import 'package:woong_front/domains/notice/model/notice.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 
@@ -24,7 +24,7 @@ class _ShortNoticeSliderViewState extends State<ShortNoticeSliderView> {
         context.select((HomeVM value) => value.home.shortNoticeList ?? []);
 
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.only(top: 10, bottom: 5),
       height: 120,
       // width: MediaQuery.of(context).size.width,
       child: Column(

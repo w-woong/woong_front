@@ -15,10 +15,12 @@ class CartHttp implements CartService {
   @override
   Future<Cart> findCart() async {
     try {
-      var response = await client.get(AppConstant.orderFindOrCreateCartPath,
-          options: Options(headers: {
-            Headers.contentTypeHeader: 'application/json; charset=utf-8'
-          }));
+      var response = await client.get(
+        AppConstant.orderFindOrCreateCartPath,
+        options: Options(headers: {
+          Headers.contentTypeHeader: 'application/json; charset=utf-8'
+        }),
+      );
 
       var decoded = jsonDecode(response.data) as Map<String, dynamic>;
       if (decoded['document'] == null) {

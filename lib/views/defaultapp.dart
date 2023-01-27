@@ -8,12 +8,11 @@ import 'package:woong_front/commons/interceptors/validate_response_interceptor.d
 import 'package:woong_front/constants/routes.dart';
 
 // models
-import 'package:woong_front/domains/appconfig/appconfig.dart';
-import 'package:woong_front/domains/appconfig/appconfig_repo.dart';
-import 'package:woong_front/domains/appconfig/appconfig_vm.dart';
-import 'package:woong_front/domains/home/model/home.dart';
-import 'package:woong_front/domains/home/home_repo.dart';
-import 'package:woong_front/domains/home/home_vm.dart';
+import 'package:woong_front/domains/appconfig/adapter/appconfig_repo.dart';
+import 'package:woong_front/domains/appconfig/viewmodel/appconfig_vm.dart';
+import 'package:woong_front/domains/home/adapter/home_http.dart';
+import 'package:woong_front/domains/home/port/home_port.dart';
+import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
 import 'package:woong_front/domains/identity/adapter/auth_http.dart';
 import 'package:woong_front/domains/identity/adapter/token_refresh_http.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
@@ -67,6 +66,7 @@ class _DefaultAppState extends State<DefaultApp> {
   late TokenRepo tokenRepo;
   late UserService userService;
   late CartService cartService;
+  late HomeService homeService;
 
   late AppConfigVM appConfigVM;
 
@@ -146,23 +146,17 @@ class _DefaultAppState extends State<DefaultApp> {
     // service
     userService = UserHttp(userClient);
     cartService = CartHttp(orderClient);
+    homeService = HomeHttp(woongClient);
 
-    appConfigVM = AppConfigVM(repo: AppConfigHttp(woongClient));
-    appConfigVM.fetch(AppConstant.appID);
-
-    homeVM = HomeVM(
-        homeRepo: HomeHttp(AppConstant.woongUrl, AppConstant.bearerToken));
-    homeVM.fetch(AppConstant.appID);
+    // ViewModel
+    appConfigVM = AppConfigVM(svc: AppConfigHttp(woongClient));
+    homeVM = HomeVM(homeSvc: homeService);
 
     shortNoticeRepo = ShortNoticeRepo();
     shortNoticeVM = ShortNoticeVM(repo: shortNoticeRepo);
-    shortNoticeVM.fetchNoticeList();
     promotionVM = PromotionVM(repo: PromotionRepo());
-    promotionVM.fetchPromotionList();
     recommendVM = RecommendVM(repo: RecommendRepo());
-    recommendVM.fetchRecommendList();
     productVM = ProductVM(repo: ProductRepo());
-    productVM.fetch();
     productDetailVM =
         ProductDetailVM(repo: ProductDetailDummy(), product: Product.empty());
 
@@ -170,9 +164,16 @@ class _DefaultAppState extends State<DefaultApp> {
         googleAuthService: googleAuthService,
         tokenRepo: tokenRepo,
         userService: userService);
-    loginVM.checkAuthorized();
 
     cartVM = CartVM(cartService);
+
+    appConfigVM.fetch(AppConstant.appID);
+    homeVM.fetch(AppConstant.appID);
+    shortNoticeVM.fetchNoticeList();
+    promotionVM.fetchPromotionList();
+    recommendVM.fetchRecommendList();
+    productVM.fetch();
+    loginVM.checkAuthorized();
   }
 
   @override
@@ -332,34 +333,13 @@ class DefaultMaterialApp extends StatefulWidget {
 class _DefaultMaterialAppState extends State<DefaultMaterialApp> {
   @override
   Widget build(BuildContext context) {
+    String title = context.select((AppConfigVM vm) => vm.appConfig.name);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: widget.router,
-      title: context.select((AppConfigVM vm) => vm.appConfig.name),
+      title: title,
       theme: defaultTheme,
       darkTheme: defaultThemeDark,
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSwatch(
-      //     primarySwatch: Colors.amber,
-      //   ),
-      //   brightness: Brightness.light,
-      //   // primaryColor: Colors.orange[800],
-      //   // focusColor: Colors.lightBlue[800],
-      //   appBarTheme: AppBarTheme(
-      //     backgroundColor: Theme.of(context).bottomAppBarColor,
-      //     foregroundColor: Colors.black,
-      //     titleTextStyle: TextStyle(
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      //   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      //   //   selectedItemColor: Colors.lightBlue[800],
-      //   // ),
-      // ),
-      // darkTheme: ThemeData(
-      //   brightness: Brightness.dark,
-      //   colorScheme: ColorScheme.dark(),
-      // ),
     );
   }
 }

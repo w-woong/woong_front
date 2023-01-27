@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:woong_front/domains/home/home_vm.dart';
+import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
 import 'package:woong_front/domains/product/model/group.dart';
 import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';

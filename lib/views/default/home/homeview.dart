@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woong_front/domains/home/model/home.dart';
-import 'package:woong_front/domains/home/home_vm.dart';
+import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 import 'package:woong_front/domains/product/model/group.dart';
 import 'package:woong_front/domains/promotion/model/promotion.dart';
@@ -29,30 +29,12 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
-  Future<void> _onRefresh() async {
-    context.read<HomeVM>().loading();
-    refreshKey.currentState?.show(atTop: false);
-    // await context.read<ShortNoticeVM>().fetchNoticeList();
-    // await context.read<PromotionVM>().fetchPromotionList();
-    await context.read<RecommendVM>().fetchRecommendList();
-    context.read<HomeVM>().finishedLoading();
-    // await Future.delayed(Duration(seconds: 2));
-
-    return Future<void>.value();
-  }
-
   @override
   Widget build(BuildContext context) {
     // return _HomeBody(key: UniqueKey());
 
     return Scaffold(
-      body: RefreshIndicator(
-        key: refreshKey,
-        edgeOffset: 120,
-        displacement: 20,
-        onRefresh: _onRefresh,
-        child: const _HomeBody(),
-      ),
+      body: const _HomeBody(),
       bottomNavigationBar: BottomNavV2(
         tabs: widget.bottomTabs,
       ),
@@ -104,16 +86,7 @@ class _HomeBodyState extends State<_HomeBody> {
       slivers: [
         DefaultAppBar(
             title: homeVM.home.name, showCart: true, showAccount: true),
-        SliverToBoxAdapter(
-          child: AnimatedContainer(
-            // color: Colors.amber,
-            curve: Curves.easeIn,
-            duration:
-                context.select((HomeVM value) => value.loadingAnimDuration),
-            height: context.select((HomeVM value) => value.loadingAreaHeight),
-          ),
-        ),
-        const SliverToBoxAdapter(child: DividerView()),
+        // const SliverToBoxAdapter(child: DividerView()),
         const SliverToBoxAdapter(child: ShortNoticeSliderView()),
         const SliverToBoxAdapter(child: DividerView()),
         SliverList(

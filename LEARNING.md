@@ -62,4 +62,17 @@ brew install cocoapods
 
 Android studio 
 File > Invalidate Caches / Restart
+
+just do
+flutter run
 ```
+
+## Constructors
+
+```dart
+  HomeHttp(this.baseUrl, this.bearerToken, {int? defaultTimeout}) {
+    this.defaultTimeout = defaultTimeout ?? 6;
+  }
+  
+```
+

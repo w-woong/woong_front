@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:woong_front/commons/json.dart';
-import 'package:woong_front/domains/appconfig/appconfig.dart';
+import 'package:woong_front/domains/appconfig/model/appconfig.dart';
 import 'package:woong_front/domains/notice/model/notice.dart';
 import 'package:woong_front/domains/product/model/group.dart';
 import 'package:woong_front/domains/product/product.dart';
