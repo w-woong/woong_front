@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:woong_front/domains/order/model/cart_product.dart';
 import 'package:woong_front/domains/order/viewmodel/cart_vm.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:provider/provider.dart';

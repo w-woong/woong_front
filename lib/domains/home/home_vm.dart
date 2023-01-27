@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/home/home.dart';
+import 'package:woong_front/domains/home/model/home.dart';
 import 'package:woong_front/domains/home/home_repo.dart';
 
 class HomeVM extends ChangeNotifier {

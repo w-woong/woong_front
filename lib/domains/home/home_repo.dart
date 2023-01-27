@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:woong_front/domains/home/home.dart';
+import 'package:woong_front/domains/home/model/home.dart';
 import 'package:http/http.dart' as http;
 
 abstract class HomeRepo {

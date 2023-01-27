@@ -1,45 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 // import 'package:woong_front/domains/promotion/promotion.dart';
-
-class Product {
-  String id;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String imgUrl;
-  String name;
-  double price;
-  String description;
-
-  List<String> topImgUrlList;
-
-  Product({required this.name, required this.price, required this.imgUrl})
-      : id = '',
-        createdAt = DateTime.now(),
-        updatedAt = DateTime.now(),
-        description = '',
-        topImgUrlList = [];
-  Product.empty()
-      : id = '',
-        createdAt = DateTime.now(),
-        updatedAt = DateTime.now(),
-        imgUrl = '',
-        name = '',
-        price = 0,
-        description = '',
-        topImgUrlList = [];
-
-  Product.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        createdAt =
-            DateTime.parse(json['created_at'] ?? "2006-01-02T01:01:01+09:00"),
-        updatedAt =
-            DateTime.parse(json['updated_at'] ?? "2006-01-02T01:01:01+09:00"),
-        imgUrl = json['img_url'],
-        name = json['name'],
-        price = json['price'].toDouble(),
-        description = json['description'],
-        topImgUrlList = json['top_img_url_list'] ?? [];
-}
 
 class ProductRepo {
   ProductRepo();

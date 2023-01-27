@@ -1,5 +1,5 @@
 import 'package:woong_front/commons/strings.dart';
-import 'package:woong_front/domains/notice/notice.dart';
+import 'package:woong_front/domains/notice/model/notice.dart';
 
 class ShortNoticeRepo {
   ShortNoticeRepo();

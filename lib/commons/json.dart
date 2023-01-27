@@ -47,4 +47,8 @@ class JsonUtils {
     // var v = map[key] as double? ?? 0.0;
     // return v;
   }
+
+  static DateTime dateTimeFromJson(String? json) {
+    return DateTime.parse(json ?? "2006-01-02T01:01:01+09:00");
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/product/product.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product_detail_repo.dart';
 
 class ProductDetailVM extends ChangeNotifier {

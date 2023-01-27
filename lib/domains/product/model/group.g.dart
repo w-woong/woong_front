@@ -1,25 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cart.dart';
+part of 'group.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Cart _$CartFromJson(Map<String, dynamic> json) => Cart(
+Group _$GroupFromJson(Map<String, dynamic> json) => Group(
       id: json['id'] as String,
       createdAt: JsonUtils.dateTimeFromJson(json['created_at'] as String?),
       updatedAt: JsonUtils.dateTimeFromJson(json['updated_at'] as String?),
-      userID: JsonUtils.stringFromJson(json['user_id'] as String?),
-      cartProducts: (json['cart_products'] as List<dynamic>?)
-          ?.map((e) => CartProduct.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+      name: json['name'] as String,
+      description: json['description'] as String,
+    )..products = (json['products'] as List<dynamic>?)
+        ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+        .toList();
 
-Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
+Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
       'id': instance.id,
       'created_at': JsonUtils.dateTimeToJson(instance.createdAt),
       'updated_at': JsonUtils.dateTimeToJson(instance.updatedAt),
-      'user_id': instance.userID,
-      'cart_products': instance.cartProducts?.map((e) => e.toJson()).toList(),
+      'name': instance.name,
+      'description': instance.description,
+      'products': instance.products?.map((e) => e.toJson()).toList(),
     };

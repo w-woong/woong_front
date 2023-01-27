@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:woong_front/domains/product/product.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ProductDetailRepo {

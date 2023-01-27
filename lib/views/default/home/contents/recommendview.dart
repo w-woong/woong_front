@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:woong_front/domains/home/home_vm.dart';
-import 'package:woong_front/domains/product/group.dart';
+import 'package:woong_front/domains/product/model/group.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 
@@ -18,14 +19,14 @@ class _RecommendSliderViewState extends State<RecommendSliderView> {
   Widget build(BuildContext context) {
     print('_RecommendSliderViewState build');
     List<Group> mainProducts =
-        context.select((HomeVM vm) => vm.home.mainProducts);
+        context.select((HomeVM vm) => vm.home.mainProducts ?? []);
     print(mainProducts);
     List<Product> recommendedProducts = context.select((HomeVM vm) {
-      var mainProducts = vm.home.mainProducts;
+      var mainProducts = vm.home.mainProducts ?? [];
       if (mainProducts.isEmpty) {
         return [];
       }
-      return mainProducts[0].products;
+      return mainProducts[0].products ?? [];
     });
     return Container(
       margin: EdgeInsets.all(10.0),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/domains/home/home.dart';
+import 'package:woong_front/domains/home/model/home.dart';
 import 'package:woong_front/domains/home/home_vm.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
-import 'package:woong_front/domains/product/group.dart';
+import 'package:woong_front/domains/product/model/group.dart';
+import 'package:woong_front/domains/promotion/model/promotion.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/commonviews/group_product_horizontal_grid_view.dart';
@@ -89,8 +90,8 @@ class _HomeBodyState extends State<_HomeBody> {
     HomeVM homeVM = context.select((HomeVM value) => value);
     // Home home = homeVM.home;
     List<Promotion> promotionList =
-        context.select((HomeVM value) => value.home.mainPromotionList);
-    List<Group> mainProducts = homeVM.home.mainProducts;
+        context.select((HomeVM value) => value.home.mainPromotionList ?? []);
+    List<Group> mainProducts = homeVM.home.mainProducts!;
 
     _scrollController = ScrollController(initialScrollOffset: homeVM.position);
     _scrollController.addListener(() {
@@ -129,7 +130,7 @@ class _HomeBodyState extends State<_HomeBody> {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              if (mainProducts[index].products.isEmpty) {
+              if ((mainProducts[index].products ?? []).isEmpty) {
                 return null;
               }
               return GroupProductView(
@@ -143,7 +144,7 @@ class _HomeBodyState extends State<_HomeBody> {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              if (mainProducts[index].products.isEmpty) {
+              if ((mainProducts[index].products ?? []).isEmpty) {
                 return null;
               }
               return GroupProductHorizontalGridView(

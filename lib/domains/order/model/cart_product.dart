@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:woong_front/commons/json.dart';
 import 'package:woong_front/domains/common/httpbody.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
 
 part 'cart_product.g.dart';
@@ -10,10 +11,16 @@ class CartProduct {
   @JsonKey(name: 'id', fromJson: JsonUtils.stringFromJson)
   String id;
 
-  @JsonKey(name: 'created_at', toJson: JsonUtils.dateTimeToJson)
+  @JsonKey(
+      name: 'created_at',
+      toJson: JsonUtils.dateTimeToJson,
+      fromJson: JsonUtils.dateTimeFromJson)
   DateTime createdAt;
 
-  @JsonKey(name: 'updated_at', toJson: JsonUtils.dateTimeToJson)
+  @JsonKey(
+      name: 'updated_at',
+      toJson: JsonUtils.dateTimeToJson,
+      fromJson: JsonUtils.dateTimeFromJson)
   DateTime updatedAt;
 
   @JsonKey(name: 'cart_id', fromJson: JsonUtils.stringFromJson)

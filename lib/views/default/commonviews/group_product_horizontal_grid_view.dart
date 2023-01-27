@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/product/group.dart';
+import 'package:woong_front/domains/product/model/group.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/views/default/commonviews/product_thumb_view.dart';
 
@@ -41,7 +42,7 @@ class _GroupProductHorizontalGridViewState
                 mainAxisSpacing: 10.0,
                 crossAxisSpacing: 10.0,
               ),
-              children: getItems(widget.group.products),
+              children: getItems(widget.group.products ?? []),
             ),
           ),
         ],

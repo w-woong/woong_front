@@ -8,9 +8,15 @@ part 'cart.g.dart';
 class Cart {
   @JsonKey(name: 'id')
   String id;
-  @JsonKey(name: 'created_at', toJson: JsonUtils.dateTimeToJson)
+  @JsonKey(
+      name: 'created_at',
+      toJson: JsonUtils.dateTimeToJson,
+      fromJson: JsonUtils.dateTimeFromJson)
   DateTime createdAt;
-  @JsonKey(name: 'updated_at', toJson: JsonUtils.dateTimeToJson)
+  @JsonKey(
+      name: 'updated_at',
+      toJson: JsonUtils.dateTimeToJson,
+      fromJson: JsonUtils.dateTimeFromJson)
   DateTime updatedAt;
   @JsonKey(name: 'user_id', fromJson: JsonUtils.stringFromJson)
   String userID;

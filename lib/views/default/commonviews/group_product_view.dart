@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/product/group.dart';
+import 'package:woong_front/domains/product/model/group.dart';
+import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/views/default/commonviews/product_thumb_view.dart';
 
@@ -31,7 +32,7 @@ class _GroupProductViewState extends State<GroupProductView> {
             ),
           ),
           CarouselSlider(
-            items: getProducts(widget.group.products),
+            items: getProducts(widget.group.products ?? []),
             options: CarouselOptions(
               height: 300,
               enlargeCenterPage: false,

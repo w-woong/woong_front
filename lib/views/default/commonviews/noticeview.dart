@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:woong_front/domains/notice/notice.dart';
+import 'package:woong_front/domains/notice/model/notice.dart';
 import 'package:woong_front/views/default/components/textview.dart';
 
 class NoticeView extends StatelessWidget {

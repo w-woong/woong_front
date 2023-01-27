@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:woong_front/domains/home/home_vm.dart';
-import 'package:woong_front/domains/notice/notice.dart';
+import 'package:woong_front/domains/notice/model/notice.dart';
 import 'package:woong_front/domains/notice/noticevm.dart';
 
 class ShortNoticeSliderView extends StatefulWidget {
@@ -21,7 +21,7 @@ class _ShortNoticeSliderViewState extends State<ShortNoticeSliderView> {
     // print('_ShortNoticeSliderViewState build');
 
     List<ShortNotice> noticeList =
-        context.select((HomeVM value) => value.home.shortNoticeList);
+        context.select((HomeVM value) => value.home.shortNoticeList ?? []);
 
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
