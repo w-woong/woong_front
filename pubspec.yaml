@@ -49,6 +49,7 @@ dependencies:
   flutter_secure_storage: ^7.0.1
   json_annotation: ^4.7.0
   webview_flutter: ^4.0.1
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

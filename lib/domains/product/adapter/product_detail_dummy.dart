@@ -1,14 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:woong_front/domains/product/model/product.dart';
-import 'package:http/http.dart' as http;
+import 'package:woong_front/domains/product/port/product_port.dart';
 
-abstract class ProductDetailRepo {
-  Future<Product> findProductDetail(String id);
-}
-
-class ProductDetailDummy implements ProductDetailRepo {
+class ProductDetailDummy implements ProductDetailService {
   ProductDetailDummy();
 
   @override
@@ -31,36 +24,5 @@ class ProductDetailDummy implements ProductDetailRepo {
       return product;
     });
     return res;
-  }
-}
-
-class ProductDetailHttp implements ProductDetailRepo {
-  String baseUrl;
-  String bearerToken;
-  late int defaultTimeout;
-
-  ProductDetailHttp(this.baseUrl, this.bearerToken, {int? defaultTimeout}) {
-    this.defaultTimeout = defaultTimeout ?? 6;
-  }
-
-  @override
-  Future<Product> findProductDetail(String id) async {
-    var response =
-        await http.get(Uri.parse('$baseUrl/v1/product/detail/$id'), headers: {
-      HttpHeaders.authorizationHeader: 'Bearer $bearerToken',
-      HttpHeaders.contentTypeHeader: 'application/json',
-    }).timeout(Duration(seconds: defaultTimeout));
-    if (response.statusCode >= 400 || response.statusCode < 100) {
-      throw 'error ${response.statusCode}';
-    }
-    var decoded =
-        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-
-    int status = decoded['status'];
-    if (decoded['status'] != 200) {
-      throw 'error $status';
-    }
-
-    return Product.fromJson(decoded['document']);
   }
 }

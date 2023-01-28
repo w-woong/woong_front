@@ -60,7 +60,7 @@ class ProductVM extends ChangeNotifier {
       : products = [],
         selectedProduct = Product.empty();
 
-  void fetch() async {
+  Future<void> fetch() async {
     products = await repo.readProducts();
     notifyListeners();
   }

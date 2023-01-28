@@ -8,7 +8,9 @@ import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 
 class RecommendSliderView extends StatefulWidget {
-  const RecommendSliderView({super.key});
+  final List<Product> products;
+
+  const RecommendSliderView({super.key, required this.products});
 
   @override
   State<RecommendSliderView> createState() => _RecommendSliderViewState();
@@ -18,16 +20,16 @@ class _RecommendSliderViewState extends State<RecommendSliderView> {
   @override
   Widget build(BuildContext context) {
     print('_RecommendSliderViewState build');
-    List<Group> mainProducts =
-        context.select((HomeVM vm) => vm.home.mainProducts ?? []);
-    print(mainProducts);
-    List<Product> recommendedProducts = context.select((HomeVM vm) {
-      var mainProducts = vm.home.mainProducts ?? [];
-      if (mainProducts.isEmpty) {
-        return [];
-      }
-      return mainProducts[0].products ?? [];
-    });
+    // List<Group> mainProducts =
+    //     context.select((HomeVM vm) => vm.home.mainProducts ?? []);
+    // print(mainProducts);
+    // List<Product> recommendedProducts = context.select((HomeVM vm) {
+    //   var mainProducts = vm.home.mainProducts ?? [];
+    //   if (mainProducts.isEmpty) {
+    //     return [];
+    //   }
+    //   return mainProducts[0].products ?? [];
+    // });
     return Container(
       margin: EdgeInsets.all(10.0),
       child: Column(
@@ -44,7 +46,7 @@ class _RecommendSliderViewState extends State<RecommendSliderView> {
             ),
           ),
           CarouselSlider(
-            items: getProducts(recommendedProducts),
+            items: getProducts(widget.products),
             options: CarouselOptions(
               height: 300,
               enlargeCenterPage: false,

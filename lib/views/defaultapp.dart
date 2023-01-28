@@ -25,8 +25,8 @@ import 'package:woong_front/domains/order/port/cart_port.dart';
 import 'package:woong_front/domains/order/viewmodel/cart_vm.dart';
 import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
-import 'package:woong_front/domains/product/product_detail_repo.dart';
-import 'package:woong_front/domains/product/product_detail_vm.dart';
+import 'package:woong_front/domains/product/adapter/product_detail_http.dart';
+import 'package:woong_front/domains/product/viewmodel/product_detail_vm.dart';
 import 'package:woong_front/domains/promotion/promotion.dart';
 import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/domains/user/adapter/user_http.dart';
@@ -58,6 +58,7 @@ class _DefaultAppState extends State<DefaultApp> {
   late Dio refreshOnlyClient;
   late Dio authClient;
   late Dio woongClient;
+  late Dio productClient;
   late Dio userClient;
   late Dio orderClient;
 
@@ -124,6 +125,16 @@ class _DefaultAppState extends State<DefaultApp> {
     woongClient.interceptors
         .add(AuthBearerInterceptor(AppConstant.bearerToken));
 
+    productClient = Dio(
+      BaseOptions(
+        baseUrl: AppConstant.productUrl,
+        connectTimeout: AppConstant.defaultConnectTimeout,
+        receiveTimeout: AppConstant.defaultReceiveTimeout,
+      ),
+    );
+    productClient.interceptors
+        .add(AuthBearerInterceptor(AppConstant.bearerToken));
+
     userClient = Dio(
       BaseOptions(
         baseUrl: AppConstant.userBaseUrl,
@@ -147,6 +158,7 @@ class _DefaultAppState extends State<DefaultApp> {
     userService = UserHttp(userClient);
     cartService = CartHttp(orderClient);
     homeService = HomeHttp(woongClient);
+    var productService = ProductDetailHttp(productClient);
 
     // ViewModel
     appConfigVM = AppConfigVM(svc: AppConfigHttp(woongClient));
@@ -158,7 +170,7 @@ class _DefaultAppState extends State<DefaultApp> {
     recommendVM = RecommendVM(repo: RecommendRepo());
     productVM = ProductVM(repo: ProductRepo());
     productDetailVM =
-        ProductDetailVM(repo: ProductDetailDummy(), product: Product.empty());
+        ProductDetailVM(svc: productService, product: Product.empty());
 
     loginVM = LoginVM(
         googleAuthService: googleAuthService,
@@ -168,12 +180,13 @@ class _DefaultAppState extends State<DefaultApp> {
     cartVM = CartVM(cartService);
 
     appConfigVM.fetch(AppConstant.appID);
-    homeVM.fetch(AppConstant.appID);
-    shortNoticeVM.fetchNoticeList();
-    promotionVM.fetchPromotionList();
-    recommendVM.fetchRecommendList();
-    productVM.fetch();
     loginVM.checkAuthorized();
+
+    // homeVM.fetch(AppConstant.appID);
+    // shortNoticeVM.fetchNoticeList();
+    // promotionVM.fetchPromotionList();
+    // recommendVM.fetchRecommendList();
+    // productVM.fetch();
   }
 
   @override
@@ -204,6 +217,7 @@ class _DefaultAppState extends State<DefaultApp> {
               pageBuilder: (context, state) {
                 return NoTransitionPage(
                   child: const HomeView(
+                    path: AppRouteConstant.home,
                     bottomTabs: DefaultAppNavBar.tabs,
                   ),
                   key: state.pageKey,
@@ -213,6 +227,15 @@ class _DefaultAppState extends State<DefaultApp> {
               // builder: (BuildContext context, GoRouterState state) {
               //   return HomeView();
               // },
+              routes: [
+                GoRoute(
+                  path: 'product',
+                  builder: (context, state) {
+                    Product product = state.extra as Product;
+                    return ProductDetailView(product: product, isSheet: false);
+                  },
+                ),
+              ],
             ),
             GoRoute(
               path: AppRouteConstant.shopping,

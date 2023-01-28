@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woong_front/domains/home/model/home.dart';
+import 'package:woong_front/constants/constants.dart';
 import 'package:woong_front/domains/home/viewmodel/home_vm.dart';
-import 'package:woong_front/domains/notice/viewmodel/noticevm.dart';
 import 'package:woong_front/domains/product/model/group.dart';
+import 'package:woong_front/domains/product/model/product.dart';
+import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/domains/promotion/model/promotion.dart';
-import 'package:woong_front/domains/promotion/promotion.dart';
-import 'package:woong_front/domains/recommend/recommend.dart';
 import 'package:woong_front/views/default/commonviews/group_product_horizontal_grid_view.dart';
 import 'package:woong_front/views/default/commonviews/group_product_view.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
@@ -19,8 +18,9 @@ import 'package:woong_front/views/default/home/contents/recommendview.dart';
 import 'package:woong_front/views/default/home/contents/shortnoticeview.dart';
 
 class HomeView extends StatefulWidget {
+  final String path;
   final List<ScaffoldWithNavBarTabItem> bottomTabs;
-  const HomeView({super.key, required this.bottomTabs});
+  const HomeView({super.key, required this.path, required this.bottomTabs});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
     // return _HomeBody(key: UniqueKey());
 
     return Scaffold(
-      body: const _HomeBody(),
+      body: _HomeBody(path: widget.path),
       bottomNavigationBar: BottomNavV2(
         tabs: widget.bottomTabs,
       ),
@@ -43,7 +43,8 @@ class _HomeViewState extends State<HomeView> {
 }
 
 class _HomeBody extends StatefulWidget {
-  const _HomeBody({super.key});
+  final String path;
+  const _HomeBody({super.key, required this.path});
 
   @override
   State<_HomeBody> createState() => _HomeBodyState();
@@ -51,11 +52,11 @@ class _HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<_HomeBody> {
   late ScrollController _scrollController;
-  double position = 0.0;
 
   @override
   void initState() {
     super.initState();
+    context.read<HomeVM>().fetch(AppConstant.appID).catchError((e) => print(e));
   }
 
   @override
@@ -70,10 +71,11 @@ class _HomeBodyState extends State<_HomeBody> {
     print('_HomeBodyState build');
 
     HomeVM homeVM = context.select((HomeVM value) => value);
-    // Home home = homeVM.home;
     List<Promotion> promotionList =
         context.select((HomeVM value) => value.home.mainPromotionList ?? []);
-    List<Group> mainProducts = homeVM.home.mainProducts!;
+    List<Group> mainProducts = homeVM.home.mainProducts ?? [];
+    // List<Product> recommendedProducts =
+    //     mainProducts.isEmpty ? [] : (mainProducts[0].products ?? []);
 
     _scrollController = ScrollController(initialScrollOffset: homeVM.position);
     _scrollController.addListener(() {
@@ -121,6 +123,7 @@ class _HomeBodyState extends State<_HomeBody> {
                 return null;
               }
               return GroupProductHorizontalGridView(
+                path: widget.path,
                 group: mainProducts[index],
               );
             },
@@ -128,10 +131,11 @@ class _HomeBodyState extends State<_HomeBody> {
           ),
         ),
         const SliverToBoxAdapter(child: DividerView()),
-        const SliverToBoxAdapter(child: RecommendSliderView()),
-        const SliverToBoxAdapter(child: DividerView()),
-        const SliverToBoxAdapter(child: DynamicProductsView()),
-        const SliverToBoxAdapter(child: DividerView()),
+        // SliverToBoxAdapter(
+        //     child: RecommendSliderView(products: recommendedProducts)),
+        // const SliverToBoxAdapter(child: DividerView()),
+        // SliverToBoxAdapter(child: DynamicProductsView(products: products)),
+        // const SliverToBoxAdapter(child: DividerView()),
         const SliverToBoxAdapter(
           child: BottomInfoView(),
         ),

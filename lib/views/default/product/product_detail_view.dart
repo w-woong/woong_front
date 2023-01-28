@@ -1,14 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:woong_front/commons/strings.dart';
 import 'package:woong_front/domains/notice/model/notice.dart';
 import 'package:woong_front/domains/product/mandatory.dart';
 import 'package:woong_front/domains/product/model/product.dart';
 import 'package:woong_front/domains/product/product.dart';
-import 'package:woong_front/domains/product/product_detail_repo.dart';
-import 'package:woong_front/domains/product/product_detail_vm.dart';
+import 'package:woong_front/domains/product/adapter/product_detail_http.dart';
+import 'package:woong_front/domains/product/viewmodel/product_detail_vm.dart';
 import 'package:woong_front/views/default/commonviews/noticeview.dart';
 import 'package:woong_front/views/default/commonviews/short_notice.dart';
 import 'package:woong_front/views/default/components/appbar.dart';
@@ -49,6 +50,16 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       appBar: widget.isSheet
           ? AppBar(
               automaticallyImplyLeading: false,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.close_rounded,
+                  ),
+                ),
+              ],
               title: Text(
                 widget.product.name,
                 style: Theme.of(context).textTheme.titleLarge,
@@ -59,7 +70,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
         product: context.select((ProductDetailVM vm) => vm.product),
         isSheet: widget.isSheet,
       ),
-      bottomNavigationBar: BottomBar(isSheet: widget.isSheet),
+      bottomNavigationBar: BottomBar(
+        isSheet: widget.isSheet,
+        product: widget.product,
+      ),
     );
   }
 }
@@ -80,21 +94,22 @@ class _ProductBodyState extends State<_ProductBody> {
       shrinkWrap: true,
       controller: ModalScrollController.of(context),
       slivers: [
+        // AppBar
         widget.isSheet
             ? SliverToBoxAdapter(child: Container())
             : DefaultAppBar(
                 title: widget.product.name, showCart: true, showAccount: false),
         const SliverToBoxAdapter(child: DividerView()),
+        // Main product images
         SliverToBoxAdapter(
           child: ImageCarouselSlider(
             imgList: widget.product.topImgUrlList,
             height: MediaQuery.of(context).size.height * 0.6,
           ),
         ),
-        // const SliverToBoxAdapter(child: DividerView()),
+        // Main product info
         SliverToBoxAdapter(
           child: Container(
-            // color: Colors.amber,
             padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -114,7 +129,7 @@ class _ProductBodyState extends State<_ProductBody> {
                   children: [
                     Expanded(
                       child: TitleLargeText(
-                        text: '₩ ${widget.product.price}',
+                        text: '₩ ${widget.product.priceWithCommas}',
                         align: TextAlign.start,
                       ),
                     ),

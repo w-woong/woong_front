@@ -5,8 +5,10 @@ import 'package:woong_front/domains/product/product.dart';
 import 'package:woong_front/views/default/commonviews/product_thumb_view.dart';
 
 class GroupProductHorizontalGridView extends StatefulWidget {
-  Group group;
-  GroupProductHorizontalGridView({super.key, required this.group});
+  final Group group;
+  final String path;
+  const GroupProductHorizontalGridView(
+      {super.key, required this.group, required this.path});
 
   @override
   State<GroupProductHorizontalGridView> createState() =>
@@ -52,7 +54,8 @@ class _GroupProductHorizontalGridViewState
 
   List<Widget> getItems(List<Product> list) {
     return list
-        .map((product) => ProductThumbWithBottom(product: product))
+        .map((product) =>
+            ProductThumbWithBottom(path: widget.path, product: product))
         .toList();
   }
 }

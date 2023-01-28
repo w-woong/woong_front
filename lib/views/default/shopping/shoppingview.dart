@@ -50,6 +50,12 @@ class _ShoppingBody extends StatefulWidget {
 
 class _ShoppingBodyState extends State<_ShoppingBody> {
   @override
+  void initState() {
+    super.initState();
+    context.read<ProductVM>().fetch().catchError((e) => print(e));
+  }
+
+  @override
   Widget build(BuildContext context) {
     int numCols =
         context.select((AppConfigVM vm) => vm.appConfig.shoppingNumColumns);

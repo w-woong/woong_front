@@ -76,3 +76,33 @@ flutter run
   
 ```
 
+## Initialize on initState
+```dart
+  @override
+  void initState() {
+    super.initState();
+    context.read<CartVM>().fetch().catchError(
+      (e) {
+        showCupertinoModalBottomSheet(
+          context: context,
+          expand: false,
+          useRootNavigator: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return LoginSheetView();
+          },
+        ).then((value) => context.go('/home'));
+      },
+      test: (e) => e is UnauthorizedException,
+    ).catchError(
+      (e) {
+        print(e);
+      },
+    );
+  }
+```
+
+## Close modal sheet
+```dart
+Navigator.pop(context);
+```

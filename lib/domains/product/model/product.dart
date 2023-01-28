@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:woong_front/commons/json.dart';
 
@@ -52,6 +53,11 @@ class Product {
       _$ProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+
+  var formatter = NumberFormat("#,##0");
+  String get priceWithCommas {
+    return formatter.format(price);
+  }
 
   // Product.fromJson(Map<String, dynamic> json)
   //     : id = json['id'],

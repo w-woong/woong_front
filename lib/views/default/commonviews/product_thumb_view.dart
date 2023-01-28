@@ -4,6 +4,7 @@ import 'package:woong_front/domains/product/product.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:woong_front/views/default/components/imageview.dart';
 import 'package:woong_front/views/default/product/product_detail_view.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductThumbView extends StatefulWidget {
   final Product product;
@@ -66,7 +67,9 @@ class _ProductThumbViewState extends State<ProductThumbView> {
 
 class ProductThumbWithBottom extends StatefulWidget {
   final Product product;
-  const ProductThumbWithBottom({super.key, required this.product});
+  final String path;
+  const ProductThumbWithBottom(
+      {super.key, required this.product, required this.path});
 
   @override
   State<ProductThumbWithBottom> createState() => _ProductThumbWithBottomState();
@@ -78,7 +81,7 @@ class _ProductThumbWithBottomState extends State<ProductThumbWithBottom> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           child: Container(
             // width: 120,
             // color: Colors.red,
@@ -89,20 +92,19 @@ class _ProductThumbWithBottomState extends State<ProductThumbWithBottom> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // context.go('/shopping/product');
+                    context.go('${widget.path}/product', extra: widget.product);
 
-                    showCupertinoModalBottomSheet(
-                      context: context,
-                      expand: false,
-                      useRootNavigator: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return ProductDetailView(
-                          product: widget.product,
-                          isSheet: true,
-                        );
-                      },
-                    );
+                    // showCupertinoModalBottomSheet(
+                    //   context: context,
+                    //   expand: false,
+                    //   backgroundColor: Colors.transparent,
+                    //   builder: (context) {
+                    //     return ProductDetailView(
+                    //       product: widget.product,
+                    //       isSheet: true,
+                    //     );
+                    //   },
+                    // );
                   },
                   // child: ImageView(),
                   child: Image.network(
@@ -135,7 +137,7 @@ class _ProductThumbWithBottomState extends State<ProductThumbWithBottom> {
                         children: [
                           Expanded(
                             child: Text(
-                              '₩ ${widget.product.price}',
+                              '₩ ${widget.product.priceWithCommas}',
                               style: Theme.of(context).textTheme.titleLarge,
                               maxLines: 1,
                               softWrap: false,

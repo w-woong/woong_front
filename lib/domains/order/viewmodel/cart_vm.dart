@@ -33,6 +33,9 @@ class CartVM extends ChangeNotifier implements FetchCartVM, AddCartVM {
       var addedCartProduct = await svc.addCartProduct(cartProduct);
       myCart.addCartProduct(addedCartProduct);
     } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw UnauthorizedException(e.message);
+      }
       throw e.message;
     } catch (e) {
       rethrow;

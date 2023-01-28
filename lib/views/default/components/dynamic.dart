@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:woong_front/domains/product/model/product.dart';
-import 'package:woong_front/domains/product/product.dart';
 
 class DynamicProductsView extends StatefulWidget {
-  const DynamicProductsView({super.key});
+  final List<Product> products;
+  const DynamicProductsView({super.key, required this.products});
 
   @override
   State<DynamicProductsView> createState() => _DynamicProductsViewState();
@@ -13,9 +12,6 @@ class DynamicProductsView extends StatefulWidget {
 class _DynamicProductsViewState extends State<DynamicProductsView> {
   @override
   Widget build(BuildContext context) {
-    List<Product> products =
-        context.select((ProductVM value) => value.products);
-
     return Container(
       margin: const EdgeInsets.all(10.0),
       child: Column(
@@ -41,7 +37,7 @@ class _DynamicProductsViewState extends State<DynamicProductsView> {
                 // crossAxisSpacing: 20,
                 // mainAxisSpacing: 20,
               ),
-              children: getItems(products),
+              children: getItems(widget.products),
             ),
           ),
         ],

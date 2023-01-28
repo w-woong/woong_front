@@ -6,11 +6,13 @@ class AppConstant {
       'ab2316584873095f017f6dfa7a9415794f563fcc473eb3fe65b9167e37fd5a4b';
   static const appID = 'b69aa108-f12e-4fa0-bf4f-ba002c11a670';
 
-  static const woongUrl = 'https://192.168.0.12:49001';
-  static const authBaseUrl = 'https://192.168.0.12:5558';
-  static const userBaseUrl = 'https://192.168.0.12:8080';
-  static const orderBaseUrl = 'https://192.168.0.12:49003';
-  static const partnerBaseUrl = 'http://192.168.0.12:49004';
+  static const host = 'localhost';
+  static const woongUrl = 'https://$host:49001';
+  static const productUrl = 'https://$host:49002';
+  static const authBaseUrl = 'https://$host:5558';
+  static const userBaseUrl = 'https://$host:8080';
+  static const orderBaseUrl = 'https://$host:49003';
+  static const partnerBaseUrl = 'http://$host:49004';
 
   static const woongAppconfigPath = '/v1/woong/appconfig';
   static const woongHomeAppconfigPath = '/v1/woong/home/appconfig';
@@ -21,6 +23,8 @@ class AppConstant {
   static const authWaitPath = '/v1/auth/request';
 
   static const userAccountUrl = '/v1/user/account';
+
+  static const productPath = '/v1/product';
 
   static const orderFindOrCreateCartPath = '/v1/order/cart/_find-or-create';
   static const orderAddCartProductPath = '/v1/order/cart/product';

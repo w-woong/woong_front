@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:woong_front/domains/identity/loginvm.dart';
+import 'package:woong_front/views/default/identity/contents/login_bottombar.dart';
 import 'package:woong_front/views/default/product/contents/bottombar.dart';
 
 class LoginSheetView extends StatefulWidget {
@@ -24,7 +25,7 @@ class _LoginSheetViewState extends State<LoginSheetView> {
         actions: [],
       ),
       body: _LoginSheetBody(),
-      bottomNavigationBar: const BottomBar(isSheet: true),
+      bottomNavigationBar: const LoginBottomBar(),
     );
   }
 }
