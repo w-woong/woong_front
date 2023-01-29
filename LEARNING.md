@@ -133,6 +133,7 @@ The reason behind the error is says both material/bottom_sheet.dart and bottom_s
 
 'ModalBottomSheetRoute' is imported from both
 'package:flutter/src/material/bottom_sheet.dart' and 'package:modal_bottom_sheet/src/bottom_sheet_route.dart'.
+
 In order to fix this issue we have to hide one of the ModalBottomSheetRoute. since we need this to be imported from bottom_sheet_route we need to hide it from material
 
 This is the way that we can fix,
