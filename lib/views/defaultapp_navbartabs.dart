@@ -25,6 +25,11 @@ class DefaultAppNavBar {
       label: 'Account',
     ),
     ScaffoldWithNavBarTabItem(
+      initialLocation: AppRouteConstant.payment,
+      icon: Icon(Icons.payment),
+      label: 'Payment(test)',
+    ),
+    ScaffoldWithNavBarTabItem(
       initialLocation: '/test',
       icon: Icon(Icons.text_increase_rounded),
       label: 'Test',

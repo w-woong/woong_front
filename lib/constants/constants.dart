@@ -10,7 +10,7 @@ class AppConstant {
   static const woongUrl = 'https://$host:49001';
   static const productUrl = 'https://$host:49002';
   static const authBaseUrl = 'https://$host:5558';
-  static const userBaseUrl = 'https://$host:8080';
+  static const userBaseUrl = 'https://$host:49007';
   static const orderBaseUrl = 'https://$host:49003';
   static const partnerBaseUrl = 'http://$host:49004';
 
@@ -39,5 +39,4 @@ class AppConstant {
   //     'https://localhost:5558/v1/auth/authorize/{token_source}';
   // static const authValidateUrl =
   // 'https://localhost:5558/v1/auth/validate/{token_source}';
-
 }

@@ -106,3 +106,46 @@ flutter run
 ```dart
 Navigator.pop(context);
 ```
+
+## Dio error on web
+```
+Solution Steps:
+
+1. Go to flutter SDK path-> flutter\bin\cache
+2. Find a file by name flutter_tools.stamp, take a backup of it in some other location so that you can retain a copy then simple delete the original one.
+3. Next Go to flutter\packages\flutter_tools\lib\src\web and open chrome.dart file in any editor.
+4. Search for line '--disable-extension' then Comment it out.
+5. and and just below it add --disable-web-security.
+6. Now simple clear your IDE cache if android Studio and restart the IDE.
+7. Now, Install the flutter app on you device and now you can make Internet API call.
+
+Don’t Worry if you see this warning ‘You are using an unsupported comment-line flag: –disable-web-security. Stability and security will suffer’. This will only be soon on your local system.
+```
+
+## After upgrading flutter to 3.7.0
+```
+Error (Xcode): ../../../../.pub-cache/hosted/pub.dev/modal_bottom_sheet-2.1.2/lib/src/bottom_sheets/bar_bottom_sheet.dart:102:13: Error:
+'ModalBottomSheetRoute' is imported from both 'package:flutter/src/material/bottom_sheet.dart' and 'package:modal_bottom_sheet/src/bottom_sheet_route.dart'.
+```
+
+```
+The reason behind the error is says both material/bottom_sheet.dart and bottom_sheet_route exports the ModalBottomSheetRoute.
+
+'ModalBottomSheetRoute' is imported from both
+'package:flutter/src/material/bottom_sheet.dart' and 'package:modal_bottom_sheet/src/bottom_sheet_route.dart'.
+In order to fix this issue we have to hide one of the ModalBottomSheetRoute. since we need this to be imported from bottom_sheet_route we need to hide it from material
+
+This is the way that we can fix,
+
+Relace
+
+import 'package:flutter/material.dart' with
+
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
+
+in the following files.
+
+/Users/wonk/.pub-cache/hosted/pub.dev/modal_bottom_sheet-2.1.2/lib/src/material_with_modal_page_route.dart
+/Users/wonk/.pub-cache/hosted/pub.dev/modal_bottom_sheet-2.1.2/lib/src/bottom_sheets/bar_bottom_sheet.dart
+/Users/wonk/.pub-cache/hosted/pub.dev/modal_bottom_sheet-2.1.2/lib/src/bottom_sheets/material_bottom_sheet.dart
+```

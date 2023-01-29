@@ -4,6 +4,7 @@ import 'package:woong_front/views/default/components/appbar.dart';
 import 'package:woong_front/views/default/components/bottomnav.dart';
 import 'package:woong_front/views/default/payment/contents/delivery_request_view.dart';
 import 'package:woong_front/views/default/payment/contents/delivery_view.dart';
+import 'package:woong_front/views/default/payment/contents/test_delivery_view.dart';
 import 'package:woong_front/views/default/payment/contents/order_payment_view.dart';
 import 'package:woong_front/views/default/payment/contents/order_product_view.dart';
 import 'package:woong_front/views/default/payment/contents/payment_method_view.dart';
@@ -48,7 +49,7 @@ class _PaymentBodyState extends State<_PaymentBody> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    var body = CustomScrollView(
       slivers: [
         DefaultAppBar(
           title: widget.title,
@@ -70,21 +71,40 @@ class _PaymentBodyState extends State<_PaymentBody> {
         SliverToBoxAdapter(
           child: OrderPaymentView(),
         ),
-        SliverToBoxAdapter(
-          child: OutlinedButton(
-            child: const Text('Purchase'),
-            onPressed: () {
-              print('purchase');
-              // context.go(AppRouteConstant.payment);
-              context.go('/cart/payment');
-            },
-            // style: TextButton.styleFrom(
-            //   backgroundColor: Theme.of(context).primaryColor,
-            //   foregroundColor: Theme.of(context).primaryColorLight,
-            // ),
-          ),
-        )
       ],
     );
+
+    var pinned = Container(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(right: 10, left: 10),
+              child: OutlinedButton(
+                child: const Text('Purchase'),
+                onPressed: () {
+                  print('purchase');
+                  // context.go(AppRouteConstant.payment);
+                  context.go('/cart/payment');
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    var stack = Stack(
+      children: [
+        Column(
+          children: [
+            Expanded(child: body),
+            pinned,
+          ],
+        ),
+      ],
+    );
+
+    return stack;
   }
 }
