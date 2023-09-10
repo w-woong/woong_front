@@ -8,4 +8,5 @@ abstract class AuthService {
   Future<String> retrieveAuthRequestID();
   Future<Token> waitForToken(String authRequestID);
   Future<void> launchAuth(String authRequestID);
+  Future<void> launchAuthorization();
 }

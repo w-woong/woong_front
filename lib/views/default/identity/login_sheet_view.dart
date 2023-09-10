@@ -51,7 +51,7 @@ class _LoginSheetBodyState extends State<_LoginSheetBody> {
                 children: [
                   Text(
                     'Welcome',
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(

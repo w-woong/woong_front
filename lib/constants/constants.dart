@@ -17,10 +17,10 @@ class AppConstant {
   static const woongAppconfigPath = '/v1/woong/appconfig';
   static const woongHomeAppconfigPath = '/v1/woong/home/appconfig';
 
-  static const authRefreshPath = '/v1/auth/validate';
-  static const authPath = '/v1/auth/authorize';
-  static const authRetrievePath = '/v1/auth/request';
-  static const authWaitPath = '/v1/auth/request';
+  static const authRefreshPath = '/v1/oauth2/validate';
+  static const authPath = '/v1/oauth2/authorize';
+  static const authRetrievePath = '/v1/oauth2/request';
+  static const authWaitPath = '/v1/oauth2/request';
 
   static const userAccountUrl = '/v1/user/account';
 

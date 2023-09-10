@@ -25,9 +25,11 @@ class LoginVM extends ChangeNotifier {
   }
 
   Future<Token> _googleAuth() async {
-    var authRequestID = await googleAuthService.retrieveAuthRequestID();
-    googleAuthService.launchAuth(authRequestID);
-    return await googleAuthService.waitForToken(authRequestID);
+    // var authRequestID = await googleAuthService.retrieveAuthRequestID();
+    // googleAuthService.launchAuth(authRequestID);
+    // return await googleAuthService.waitForToken(authRequestID);
+    await googleAuthService.launchAuthorization();
+    return Future<Token>.value();
   }
 
   Future<void> authorize() async {

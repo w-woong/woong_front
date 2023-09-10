@@ -50,6 +50,7 @@ dependencies:
   json_annotation: ^4.7.0
   webview_flutter: ^4.0.1
   intl: ^0.18.0
+  firebase_dynamic_links: ^5.0.14
 
 dev_dependencies:
   flutter_test:

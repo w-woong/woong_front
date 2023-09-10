@@ -26,6 +26,20 @@ class AuthHttp implements AuthService {
   }
 
   @override
+  Future<void> launchAuthorization() async {
+    var baseUrl = client.options.baseUrl;
+    var path = AppConstant.authPath;
+    var url = '$baseUrl$path/$tokenSource';
+
+    bool res =
+        await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+
+    if (!res) {
+      throw 'error launching $url';
+    }
+  }
+
+  @override
   Future<String> retrieveAuthRequestID() async {
     try {
       var path = AppConstant.authRetrievePath;
